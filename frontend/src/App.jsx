@@ -28,7 +28,7 @@ import {
   HelpOutline,
   PlayCircleOutline,
 } from "@mui/icons-material";
-import Layout from "./components/Layout";
+import Layout from "./components/layout";
 
 function App() {
   const [file, setFile] = useState(null);
