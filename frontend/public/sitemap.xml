@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://yourdomain.com/</loc>
+    <loc>https://www.open-convert.com/</loc>
     <lastmod>2025-11-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link
       rel="alternate"
       hreflang="ko"
-      href="https://yourdomain.com/" />
+      href="https://www.open-convert.com/" />
   </url>
 </urlset>
