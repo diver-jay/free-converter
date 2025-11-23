@@ -1,6 +1,9 @@
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 function Header() {
+  const { t } = useTranslation();
+
   return (
     <Box textAlign="center" color="black" sx={{ mb: 3 }}>
       <Typography
@@ -9,10 +12,10 @@ function Header() {
         fontWeight="bold"
         gutterBottom
       >
-        Video Converter
+        {t("header.title")}
       </Typography>
       <Typography variant="h6" sx={{ opacity: 0.9 }}>
-        Free & Fast Video Conversion
+        {t("header.subtitle")}
       </Typography>
     </Box>
   );
