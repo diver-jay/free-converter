@@ -11,6 +11,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { PlayCircleOutline } from "@mui/icons-material";
+import { spacing } from "../../theme";
 
 function HowToUse() {
   const { t } = useTranslation();
@@ -20,7 +21,10 @@ function HowToUse() {
       <CardContent sx={{ p: 4 }}>
         <Stack spacing={2}>
           <Box display="flex" alignItems="center" gap={1}>
-            <PlayCircleOutline color="primary" />
+            <PlayCircleOutline
+              color="primary"
+              sx={{ fontSize: spacing.lg }} // 34px
+            />
             <Typography variant="h5" fontWeight="bold">
               {t("howToUse.title")}
             </Typography>

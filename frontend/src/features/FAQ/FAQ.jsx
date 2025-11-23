@@ -11,6 +11,7 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import { HelpOutline, ExpandMore } from "@mui/icons-material";
+import { spacing } from "../../theme";
 
 function FAQ() {
   const { t } = useTranslation();
@@ -20,7 +21,10 @@ function FAQ() {
       <CardContent sx={{ p: 4 }}>
         <Stack spacing={2}>
           <Box display="flex" alignItems="center" gap={1}>
-            <HelpOutline color="primary" />
+            <HelpOutline
+              color="primary"
+              sx={{ fontSize: spacing.lg }} // 34px
+            />
             <Typography variant="h5" fontWeight="bold">
               {t("faq.title")}
             </Typography>

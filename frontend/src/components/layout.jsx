@@ -1,6 +1,7 @@
 import { Box, Container } from "@mui/material";
 import Header from "./header";
 import Footer from "./footer";
+import { spacing } from "../theme";
 
 function Layout({ children }) {
   return (
@@ -11,12 +12,21 @@ function Layout({ children }) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        py: "80px",
       }}
     >
       <Header />
 
-      <Container maxWidth="md">{children}</Container>
+      <Container
+        maxWidth="md"
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          py: `${spacing.lg}px`,
+        }}
+      >
+        {children}
+      </Container>
 
       <Footer />
     </Box>

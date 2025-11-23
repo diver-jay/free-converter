@@ -1,22 +1,24 @@
-import { Box, Typography } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { Box } from "@mui/material";
+import LanguageSwitcher from "./languageSwitcher";
 
 function Header() {
-  const { t } = useTranslation();
-
   return (
-    <Box textAlign="center" color="black" sx={{ mb: 3 }}>
-      <Typography
-        variant="h3"
-        component="h1"
-        fontWeight="bold"
-        gutterBottom
-      >
-        {t("header.title")}
-      </Typography>
-      <Typography variant="h6" sx={{ opacity: 0.9 }}>
-        {t("header.subtitle")}
-      </Typography>
+    <Box
+      sx={{
+        height: {
+          xs: "56px",
+          md: "88px",
+        },
+        px: {
+          xs: "24px",
+          md: "88px",
+        },
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+      }}
+    >
+      <LanguageSwitcher />
     </Box>
   );
 }

@@ -19,6 +19,7 @@ import {
   Refresh,
   VideoFile,
 } from "@mui/icons-material";
+import { spacing } from "../../theme";
 
 function Converter() {
   const { t } = useTranslation();
@@ -133,7 +134,7 @@ function Converter() {
               <label htmlFor="file-input" style={{ cursor: "pointer" }}>
                 <Stack spacing={2} alignItems="center">
                   <CloudUpload
-                    sx={{ fontSize: 64, color: "primary.main" }}
+                    sx={{ fontSize: spacing.xl, color: "primary.main" }} // 55px
                   />
                   <Typography variant="h6">
                     {file ? file.name : t("upload.chooseFile")}
@@ -210,7 +211,7 @@ function Converter() {
         ) : (
           <Stack spacing={3} alignItems="center" textAlign="center">
             {/* Success State */}
-            <CheckCircle sx={{ fontSize: 80, color: "success.main" }} />
+            <CheckCircle sx={{ fontSize: spacing.xxl, color: "success.main" }} /> {/* 89px */}
             <Typography variant="h4" fontWeight="bold">
               {t("upload.conversionComplete")}
             </Typography>
