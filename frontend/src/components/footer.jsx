@@ -1,22 +1,56 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Container } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { spacing } from "../theme";
+import FAQ from "../features/faq/faq";
 
 function Footer() {
   const { t } = useTranslation();
 
   return (
     <Box
-      textAlign="center"
-      color="black"
-      sx={{ mt: `${spacing.xl}px` }}
+      sx={{
+        padding: {
+          xs: "26px 24px",
+          md: "30px 88px",
+        },
+        display: "flex",
+        flexDirection: {
+          xs: "column",
+          md: "row",
+        },
+        alignItems: {
+          xs: "center",
+          md: "flex-start",
+        },
+        justifyContent: "space-between",
+        gap: `${spacing.lg}px`,
+      }}
     >
-      <Typography variant="body2" sx={{ opacity: 0.9 }}>
-        {t("footer.info")}
-      </Typography>
-      <Typography variant="caption" sx={{ opacity: 0.8 }}>
-        {t("footer.poweredBy")}
-      </Typography>
+      <Box>
+        <FAQ />
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: {
+            xs: "center",
+            md: "flex-end",
+          },
+          textAlign: "center",
+        }}
+      >
+        <Typography
+          variant="h4"
+          sx={{ minWidth: "152px", whiteSpace: "nowrap", opacity: 0.8 }}
+        >
+          {t("footer.info")}
+        </Typography>
+        <Typography variant="body1" sx={{ opacity: 0.8 }}>
+          {t("footer.poweredBy")}
+        </Typography>
+      </Box>
     </Box>
   );
 }

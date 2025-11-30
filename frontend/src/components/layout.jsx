@@ -8,7 +8,6 @@ function Layout({ children }) {
     <Box
       sx={{
         minHeight: "100vh",
-        background: "white",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",

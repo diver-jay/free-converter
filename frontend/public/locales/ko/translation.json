@@ -1,11 +1,11 @@
 {
   "header": {
     "title": "비디오 변환기",
-    "subtitle": "무료 & 빠른 비디오 변환"
+    "subtitle": "온라인에서 파일을 쉽고 무료로 변환하세요"
   },
   "footer": {
-    "info": "100% 무료 • 회원가입 불필요 • 파일은 1시간 후 삭제됩니다",
-    "poweredBy": "FFmpeg 기반"
+    "info": "Open convert",
+    "poweredBy": "100% 무료 변환"
   },
   "upload": {
     "chooseFile": "WebM 파일 선택",

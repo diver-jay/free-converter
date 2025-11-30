@@ -1,9 +1,8 @@
 import { Stack } from "@mui/material";
 import Layout from "./components/layout";
-import Converter from "./features/Converter/Converter";
-import HowToUse from "./features/HowToUse/HowToUse";
-import FAQ from "./features/FAQ/FAQ";
-import Title from "./features/Title/Title";
+import Converter from "./features/converter/converter";
+import HowToUse from "./features/how-to-use/how-to-use";
+import Title from "./features/title/title";
 
 function App() {
   return (
@@ -12,7 +11,6 @@ function App() {
         <Title />
         <Converter />
         <HowToUse />
-        <FAQ />
       </Stack>
     </Layout>
   );

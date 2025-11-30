@@ -107,6 +107,17 @@ const theme = createTheme({
         },
       },
     },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "transparent",
+          boxShadow: "none",
+          "&:before": {
+            display: "none",
+          },
+        },
+      },
+    },
   },
 });
 

@@ -1,10 +1,11 @@
-import { Box } from "@mui/material";
-import LanguageSwitcher from "./languageSwitcher";
+import { Box, Typography } from "@mui/material";
+import LanguageSwitcher from "../features/language-switcher/language-switcher";
 
 function Header() {
   return (
     <Box
       sx={{
+        background: "white",
         height: {
           xs: "56px",
           md: "88px",
@@ -15,9 +16,12 @@ function Header() {
         },
         display: "flex",
         alignItems: "center",
-        justifyContent: "flex-end",
+        justifyContent: "space-between",
       }}
     >
+      <Typography variant="h4" fontWeight="bold" color="black">
+        Open convert
+      </Typography>
       <LanguageSwitcher />
     </Box>
   );
