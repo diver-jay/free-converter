@@ -5,24 +5,34 @@ function Header() {
   return (
     <Box
       sx={{
+        width: "100%",
         background: "white",
-        height: {
-          xs: "56px",
-          md: "88px",
-        },
-        px: {
-          xs: "24px",
-          md: "88px",
-        },
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
+        boxShadow: "0 3px 24px rgba(0,0,0,.08)",
       }}
     >
-      <Typography variant="h4" fontWeight="bold" color="black">
-        Open convert
-      </Typography>
-      <LanguageSwitcher />
+      <Box
+        sx={{
+          maxWidth: "1280px",
+          margin: "0 auto",
+          height: {
+            xs: "56px",
+            md: "88px",
+          },
+          px: {
+            xs: "24px",
+            md: "88px",
+          },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="h4" fontWeight="bold" color="black">
+          Open convert
+        </Typography>
+
+        <LanguageSwitcher />
+      </Box>
     </Box>
   );
 }

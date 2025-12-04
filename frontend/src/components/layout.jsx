@@ -8,6 +8,7 @@ function Layout({ children }) {
     <Box
       sx={{
         minHeight: "100vh",
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -19,8 +20,6 @@ function Layout({ children }) {
         maxWidth="md"
         sx={{
           flex: 1,
-          display: "flex",
-          flexDirection: "column",
           py: `${spacing.lg}px`,
         }}
       >
