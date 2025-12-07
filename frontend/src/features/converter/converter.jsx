@@ -38,7 +38,7 @@ function Converter() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
   const allowedVideoExtensions = [".webm", ".mp4", ".mov", ".avi", ".mkv", ".flv"];
   const allowedDocumentExtensions = [".pdf", ".docx"];
