@@ -39,13 +39,29 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 500 * 1024 * 1024 }, // 500MB limit
   fileFilter: (req, file, cb) => {
+    // Phase 1-2: Support common input formats
+    const allowedExtensions = [".webm", ".mp4", ".mov", ".avi", ".mkv", ".flv"];
+    const allowedMimeTypes = [
+      "video/webm",
+      "video/mp4",
+      "video/quicktime",
+      "video/x-msvideo",
+      "video/x-matroska",
+      "video/x-flv",
+    ];
+
+    const ext = path.extname(file.originalname).toLowerCase();
     if (
-      file.mimetype === "video/webm" ||
-      path.extname(file.originalname).toLowerCase() === ".webm"
+      allowedExtensions.includes(ext) ||
+      allowedMimeTypes.includes(file.mimetype)
     ) {
       cb(null, true);
     } else {
-      cb(new Error("Only .webm files are allowed!"));
+      cb(
+        new Error(
+          "Only video files are allowed (webm, mp4, mov, avi, mkv, flv)"
+        )
+      );
     }
   },
 });
@@ -81,11 +97,36 @@ setInterval(cleanupOldFiles, 30 * 60 * 1000);
 // Routes
 app.get("/", (req, res) => {
   res.json({
-    message: "WebM to MP4 Converter API",
+    message: "Video Format Converter API",
+    description: "Convert between popular video formats",
+    supportedFormats: {
+      input: ["webm", "mp4", "mov", "avi", "mkv", "flv"],
+      output: ["mp4", "webm"],
+    },
     endpoints: {
-      upload: "POST /api/upload",
-      download: "GET /api/download/:filename",
-      health: "GET /api/health",
+      upload: {
+        method: "POST",
+        path: "/api/upload",
+        description: "Upload and convert video",
+        parameters: {
+          video: "Video file (form-data)",
+          outputFormat: "Output format: mp4 or webm (optional, default: mp4)",
+        },
+      },
+      download: {
+        method: "GET",
+        path: "/api/download/:filename",
+        description: "Download converted file",
+      },
+      health: {
+        method: "GET",
+        path: "/api/health",
+        description: "API health check",
+      },
+    },
+    examples: {
+      phase1: "Any format → MP4 (webm, mov, avi, mkv, flv → mp4)",
+      phase2: "Any format → WebM (mp4, mov, avi → webm)",
     },
   });
 });
@@ -100,18 +141,37 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
     return res.status(400).json({ error: "No file uploaded" });
   }
 
+  // Phase 1-2: Support mp4 and webm output formats
+  const outputFormat = req.body.outputFormat || req.query.outputFormat || "mp4";
+  const allowedOutputFormats = ["mp4", "webm"];
+
+  if (!allowedOutputFormats.includes(outputFormat)) {
+    return res.status(400).json({
+      error: "Invalid output format",
+      allowedFormats: allowedOutputFormats,
+    });
+  }
+
   const inputPath = req.file.path;
-  const outputFilename = `${path.parse(req.file.filename).name}.mp4`;
+  const outputFilename = `${path.parse(req.file.filename).name}.${outputFormat}`;
   const outputPath = path.join(CONVERTED_DIR, outputFilename);
 
-  console.log(`Converting ${req.file.originalname}...`);
+  console.log(`Converting ${req.file.originalname} to ${outputFormat}...`);
 
-  ffmpeg(inputPath)
-    .output(outputPath)
-    .videoCodec("libx264")
-    .audioCodec("aac")
-    // 홀수 해상도를 짝수로 자동 조정 (libx264 요구사항)
-    .videoFilters("scale=trunc(iw/2)*2:trunc(ih/2)*2")
+  // Simple conversion - ffmpeg auto-selects codecs based on output format
+  const converter = ffmpeg(inputPath).output(outputPath);
+
+  // Add format-specific options if needed
+  if (outputFormat === "mp4") {
+    converter
+      .videoCodec("libx264")
+      .audioCodec("aac")
+      .videoFilters("scale=trunc(iw/2)*2:trunc(ih/2)*2");
+  } else if (outputFormat === "webm") {
+    converter.videoCodec("libvpx").audioCodec("libvorbis");
+  }
+
+  converter
     .on("start", (commandLine) => {
       console.log("FFmpeg command:", commandLine);
     })
@@ -131,6 +191,8 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
         message: "Conversion successful",
         downloadUrl: `/api/download/${outputFilename}`,
         filename: outputFilename,
+        inputFormat: path.extname(req.file.originalname).toLowerCase(),
+        outputFormat: outputFormat,
       });
     })
     .on("error", (err) => {
