@@ -5,6 +5,7 @@ FROM node:18-bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     libreoffice \
+    curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
