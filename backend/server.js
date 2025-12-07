@@ -98,10 +98,10 @@ setInterval(cleanupOldFiles, 30 * 60 * 1000);
 app.get("/", (req, res) => {
   res.json({
     message: "Video Format Converter API",
-    description: "Convert between popular video formats",
+    description: "Convert between any popular video formats",
     supportedFormats: {
       input: ["webm", "mp4", "mov", "avi", "mkv", "flv"],
-      output: ["mp4", "webm"],
+      output: ["mp4", "webm", "mov", "avi", "mkv", "flv"],
     },
     endpoints: {
       upload: {
@@ -110,7 +110,8 @@ app.get("/", (req, res) => {
         description: "Upload and convert video",
         parameters: {
           video: "Video file (form-data)",
-          outputFormat: "Output format: mp4 or webm (optional, default: mp4)",
+          outputFormat:
+            "Output format: mp4, webm, mov, avi, mkv, or flv (optional, default: mp4)",
         },
       },
       download: {
@@ -124,10 +125,14 @@ app.get("/", (req, res) => {
         description: "API health check",
       },
     },
-    examples: {
-      phase1: "Any format → MP4 (webm, mov, avi, mkv, flv → mp4)",
-      phase2: "Any format → WebM (mp4, mov, avi → webm)",
-    },
+    conversionMatrix: "Any input format → Any output format (36 combinations)",
+    popularConversions: [
+      "webm → mp4 (web to universal)",
+      "mov → mp4 (Apple to universal)",
+      "avi → mp4 (legacy to modern)",
+      "mp4 → webm (web optimization)",
+      "mkv → mp4 (compatibility)",
+    ],
   });
 });
 
@@ -161,7 +166,7 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
   // Simple conversion - ffmpeg auto-selects codecs based on output format
   const converter = ffmpeg(inputPath).output(outputPath);
 
-  // Add format-specific options if needed
+  // Add format-specific options for optimal quality
   if (outputFormat === "mp4") {
     converter
       .videoCodec("libx264")
@@ -169,7 +174,14 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
       .videoFilters("scale=trunc(iw/2)*2:trunc(ih/2)*2");
   } else if (outputFormat === "webm") {
     converter.videoCodec("libvpx").audioCodec("libvorbis");
+  } else if (outputFormat === "mov") {
+    converter.videoCodec("libx264").audioCodec("aac");
+  } else if (outputFormat === "avi") {
+    converter.videoCodec("mpeg4").audioCodec("libmp3lame");
+  } else if (outputFormat === "mkv") {
+    converter.videoCodec("libx264").audioCodec("aac");
   }
+  // flv uses auto-selected codecs
 
   converter
     .on("start", (commandLine) => {
