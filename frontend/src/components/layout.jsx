@@ -21,7 +21,7 @@ function Layout({ children }) {
         sx={{
           flex: 1,
           py: `${spacing.lg}px`,
-          maxWidth: "730px",
+          maxWidth: "800px",
         }}
       >
         {children}

@@ -24,6 +24,7 @@ import {
   ArrowDropDown,
 } from "@mui/icons-material";
 import { spacing } from "../../theme";
+import { isFileType } from "../../utils/fileTypeDetection";
 
 function Converter() {
   const { t } = useTranslation();
@@ -39,15 +40,19 @@ function Converter() {
 
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
-  const allowedExtensions = [".webm", ".mp4", ".mov", ".avi", ".mkv", ".flv"];
+  const allowedVideoExtensions = [".webm", ".mp4", ".mov", ".avi", ".mkv", ".flv"];
+  const allowedDocumentExtensions = [".pdf", ".docx"];
+  const allowedExtensions = [...allowedVideoExtensions, ...allowedDocumentExtensions];
+
+  const isVideoFile = (file) => isFileType(file, allowedVideoExtensions);
+  const isDocumentFile = (file) => isFileType(file, allowedDocumentExtensions);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      const fileExt = selectedFile.name.toLowerCase().match(/\.[^.]+$/)?.[0];
-      if (!fileExt || !allowedExtensions.includes(fileExt)) {
+      if (!isFileType(selectedFile, allowedExtensions)) {
         setError(
-          "Please select a valid video file (WebM, MP4, MOV, AVI, MKV, or FLV)"
+          "Please select a valid file (Video: WebM, MP4, MOV, AVI, MKV, FLV | Document: PDF, DOCX)"
         );
         setFile(null);
         return;
@@ -84,11 +89,21 @@ function Converter() {
     setDownloadUrl("");
 
     const formData = new FormData();
-    formData.append("video", file);
-    formData.append("outputFormat", outputFormat);
+    const isDocument = isDocumentFile(file);
+
+    // Document files use /api/upload/document endpoint
+    // Video files use /api/upload endpoint
+    if (isDocument) {
+      formData.append("document", file);
+    } else {
+      formData.append("video", file);
+      formData.append("outputFormat", outputFormat);
+    }
+
+    const endpoint = isDocument ? "/api/upload/document" : "/api/upload";
 
     try {
-      const response = await axios.post(`${API_URL}/api/upload`, formData, {
+      const response = await axios.post(`${API_URL}${endpoint}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -154,7 +169,7 @@ function Converter() {
               <input
                 id="file-input"
                 type="file"
-                accept=".webm,.mp4,.mov,.avi,.mkv,.flv"
+                accept=".webm,.mp4,.mov,.avi,.mkv,.flv,.pdf,.docx"
                 onChange={handleFileChange}
                 style={{ display: "none" }}
               />
@@ -197,37 +212,65 @@ function Converter() {
 
                   {/* Convert Button with Format Selector */}
                   <Box sx={{ display: "flex" }}>
-                    <ButtonGroup
-                      variant="contained"
-                      disabled={uploading}
-                      sx={{
-                        "& .MuiButton-root": {
-                          fontSize: { xs: "0.8rem", sm: "0.875rem" },
-                        },
-                      }}
-                    >
+                    {isDocumentFile(file) ? (
+                      // Document files: Simple button without dropdown
                       <Button
-                        startIcon={<CloudUpload sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }} />}
+                        variant="contained"
+                        startIcon={
+                          <CloudUpload
+                            sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+                          />
+                        }
                         onClick={handleUpload}
+                        disabled={uploading}
                         sx={{
                           py: { xs: 0.75, sm: 1 },
                           px: { xs: 1.5, sm: 3 },
+                          fontSize: { xs: "0.8rem", sm: "0.875rem" },
                         }}
                       >
-                        {uploading
-                          ? t("upload.converting")
-                          : outputFormat.toUpperCase()}
+                        {uploading ? t("upload.converting") : "CONVERT"}
                       </Button>
-                      <Button
-                        onClick={handleMenuClick}
+                    ) : (
+                      // Video files: Button group with dropdown
+                      <ButtonGroup
+                        variant="contained"
+                        disabled={uploading}
                         sx={{
-                          px: { xs: 1, sm: 1.5 },
-                          minWidth: "auto",
+                          "& .MuiButton-root": {
+                            fontSize: { xs: "0.8rem", sm: "0.875rem" },
+                          },
                         }}
                       >
-                        <ArrowDropDown sx={{ fontSize: { xs: "1.25rem", sm: "1.5rem" } }} />
-                      </Button>
-                    </ButtonGroup>
+                        <Button
+                          startIcon={
+                            <CloudUpload
+                              sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+                            />
+                          }
+                          onClick={handleUpload}
+                          sx={{
+                            py: { xs: 0.75, sm: 1 },
+                            px: { xs: 1.5, sm: 3 },
+                          }}
+                        >
+                          {uploading
+                            ? t("upload.converting")
+                            : outputFormat.toUpperCase()}
+                        </Button>
+                        <Button
+                          onClick={handleMenuClick}
+                          sx={{
+                            px: { xs: 1, sm: 1.5 },
+                            minWidth: "auto",
+                          }}
+                        >
+                          <ArrowDropDown
+                            sx={{ fontSize: { xs: "1.25rem", sm: "1.5rem" } }}
+                          />
+                        </Button>
+                      </ButtonGroup>
+                    )}
                   </Box>
                 </Stack>
               </Paper>
