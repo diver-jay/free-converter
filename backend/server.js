@@ -141,9 +141,9 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
     return res.status(400).json({ error: "No file uploaded" });
   }
 
-  // Phase 1-2: Support mp4 and webm output formats
+  // Support all common video output formats
   const outputFormat = req.body.outputFormat || req.query.outputFormat || "mp4";
-  const allowedOutputFormats = ["mp4", "webm"];
+  const allowedOutputFormats = ["mp4", "webm", "mov", "avi", "mkv", "flv"];
 
   if (!allowedOutputFormats.includes(outputFormat)) {
     return res.status(400).json({
