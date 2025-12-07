@@ -16,7 +16,7 @@ services:
     networks:
       - converter-network
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -28,21 +28,45 @@ services:
       dockerfile: Dockerfile
     container_name: webm-converter-frontend
     restart: unless-stopped
-    ports:
-      - "80:80"
+    environment:
+      - NODE_ENV=production
     depends_on:
       - backend
     networks:
       - converter-network
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: webm-converter-nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-proxy/conf.d:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - converter-network
+
+  certbot:
+    image: certbot/certbot
+    container_name: webm-converter-certbot
+    restart: unless-stopped
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    # Command to run renewal check every 12 hours
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   backend-uploads:
   backend-converted:
+  certbot-etc:
+  certbot-www:
 
 networks:
   converter-network:

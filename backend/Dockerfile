@@ -1,7 +1,12 @@
-FROM node:18-alpine
+# Use a Debian-based image for easier dependency installation
+FROM node:18-bookworm-slim
 
-# Install FFmpeg
-RUN apk add --no-cache ffmpeg
+# Install FFmpeg and LibreOffice
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    libreoffice \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
@@ -10,7 +15,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --only=production
+RUN npm install --only=production --no-optional
 
 # Copy application files
 COPY . .
