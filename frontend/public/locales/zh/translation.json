@@ -8,35 +8,35 @@
     "poweredBy": "基于 FFmpeg"
   },
   "upload": {
-    "chooseFile": "选择 WebM 文件",
+    "chooseFile": "选择视频文件",
     "dragDrop": "点击浏览或拖放文件",
     "selected": "已选择",
     "size": "大小",
     "uploading": "上传中... {{progress}}%",
     "converting": "转换中...",
-    "convertButton": "转换为 MP4",
+    "convertButton": "转换",
     "conversionComplete": "转换完成！",
-    "downloadButton": "下载 MP4",
+    "downloadButton": "下载",
     "convertAnother": "转换其他文件"
   },
   "errors": {
-    "selectWebm": "请选择 .webm 文件",
+    "selectWebm": "请选择有效的视频文件",
     "selectFile": "请先选择文件",
     "uploadFailed": "上传失败，请重试。"
   },
   "howToUse": {
     "title": "使用方法",
-    "step1Title": "1. 选择 WebM 文件",
-    "step1Desc": "点击上传区域或拖放以选择 WebM 文件",
-    "step2Title": "2. 开始转换",
-    "step2Desc": "点击「转换为 MP4」按钮自动开始转换",
+    "step1Title": "1. 选择视频文件",
+    "step1Desc": "点击上传区域或拖放以选择视频文件 (WebM, MP4, MOV, AVI, MKV, FLV)",
+    "step2Title": "2. 选择输出格式并转换",
+    "step2Desc": "从下拉菜单中选择所需的输出格式（MP4 或 WebM），然后点击转换按钮",
     "step3Title": "3. 下载",
-    "step3Desc": "转换完成后，点击「下载 MP4」按钮下载文件"
+    "step3Desc": "转换完成后，点击下载按钮保存转换后的文件"
   },
   "faq": {
     "title": "常见问题 (FAQ)",
-    "q1": "什么是 WebM？",
-    "a1": "WebM 是 Google 开发的开源视频格式，主要用于网络。但是，某些设备或播放器可能无法播放，需要转换为 MP4。",
+    "q1": "支持哪些视频格式？",
+    "a1": "我们支持多种视频格式之间的转换，包括 WebM、MP4、MOV、AVI、MKV 和 FLV。您可以将这些格式中的任何一种转换为 MP4 或 WebM。",
     "q2": "转换后的文件存储在哪里？",
     "a2": "转换后的文件临时存储在服务器上，1小时后自动删除。下载后立即保存到浏览器的下载文件夹中。",
     "q3": "文件大小有限制吗？",

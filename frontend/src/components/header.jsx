@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import LanguageSwitcher from "../features/language-switcher/language-switcher";
 
 function Header() {
@@ -27,9 +27,17 @@ function Header() {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h4" fontWeight="bold" color="black">
-          OpenConvert
-        </Typography>
+        <Box
+          component="img"
+          src="/logo.svg"
+          alt="OpenConvert"
+          sx={{
+            height: {
+              xs: "32px",
+              md: "40px",
+            },
+          }}
+        />
 
         <LanguageSwitcher />
       </Box>

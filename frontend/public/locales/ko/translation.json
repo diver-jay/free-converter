@@ -8,35 +8,35 @@
     "poweredBy": "100% 무료 변환"
   },
   "upload": {
-    "chooseFile": "WebM 파일 선택",
+    "chooseFile": "비디오 파일 선택",
     "dragDrop": "클릭하거나 드래그하여 파일을 선택하세요",
     "selected": "선택됨",
     "size": "크기",
     "uploading": "업로드 중... {{progress}}%",
     "converting": "변환 중...",
-    "convertButton": "MP4로 변환",
+    "convertButton": "변환",
     "conversionComplete": "변환 완료!",
-    "downloadButton": "MP4 다운로드",
+    "downloadButton": "다운로드",
     "convertAnother": "다른 파일 변환"
   },
   "errors": {
-    "selectWebm": ".webm 파일을 선택해주세요",
+    "selectWebm": "유효한 비디오 파일을 선택해주세요",
     "selectFile": "먼저 파일을 선택해주세요",
     "uploadFailed": "업로드 실패. 다시 시도해주세요."
   },
   "howToUse": {
     "title": "사용 방법",
-    "step1Title": "1. WebM 파일 선택",
-    "step1Desc": "업로드 영역을 클릭하거나 드래그하여 WebM 파일을 선택하세요",
-    "step2Title": "2. 변환 시작",
-    "step2Desc": "'MP4로 변환' 버튼을 클릭하면 자동으로 변환이 시작됩니다",
+    "step1Title": "1. 비디오 파일 선택",
+    "step1Desc": "업로드 영역을 클릭하거나 드래그하여 비디오 파일을 선택하세요 (WebM, MP4, MOV, AVI, MKV, FLV)",
+    "step2Title": "2. 출력 형식 선택 및 변환",
+    "step2Desc": "드롭다운에서 원하는 출력 형식(MP4 또는 WebM)을 선택하고 변환 버튼을 클릭하세요",
     "step3Title": "3. 다운로드",
-    "step3Desc": "변환이 완료되면 'MP4 다운로드' 버튼을 클릭하여 파일을 다운로드하세요"
+    "step3Desc": "변환이 완료되면 다운로드 버튼을 클릭하여 변환된 파일을 저장하세요"
   },
   "faq": {
     "title": "자주 묻는 질문 (FAQ)",
-    "q1": "WebM이 무엇인가요?",
-    "a1": "WebM은 구글이 개발한 오픈소스 동영상 포맷으로, 주로 웹에서 사용됩니다. 하지만 일부 기기나 플레이어에서는 재생이 안 되어 MP4로 변환이 필요합니다.",
+    "q1": "어떤 비디오 형식을 지원하나요?",
+    "a1": "WebM, MP4, MOV, AVI, MKV, FLV를 포함한 여러 비디오 형식 간 변환을 지원합니다. 이러한 형식들을 MP4 또는 WebM으로 변환할 수 있습니다.",
     "q2": "변환된 파일은 어디에 저장되나요?",
     "a2": "변환된 파일은 서버에 임시로 저장되며, 1시간 후 자동으로 삭제됩니다. 다운로드 후에는 즉시 브라우저의 다운로드 폴더에 저장됩니다.",
     "q3": "파일 크기 제한이 있나요?",

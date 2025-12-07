@@ -8,35 +8,35 @@
     "poweredBy": "100% Free convert"
   },
   "upload": {
-    "chooseFile": "Choose WebM file",
+    "chooseFile": "Choose video file",
     "dragDrop": "Click to browse or drag and drop",
     "selected": "Selected",
     "size": "Size",
     "uploading": "Uploading... {{progress}}%",
     "converting": "Converting...",
-    "convertButton": "Convert to MP4",
+    "convertButton": "Convert",
     "conversionComplete": "Conversion Complete!",
-    "downloadButton": "Download MP4",
+    "downloadButton": "Download",
     "convertAnother": "Convert Another"
   },
   "errors": {
-    "selectWebm": "Please select a .webm file",
+    "selectWebm": "Please select a valid video file",
     "selectFile": "Please select a file first",
     "uploadFailed": "Upload failed. Please try again."
   },
   "howToUse": {
     "title": "How to Use",
-    "step1Title": "1. Select WebM File",
-    "step1Desc": "Click the upload area or drag and drop to select a WebM file",
-    "step2Title": "2. Start Conversion",
-    "step2Desc": "Click 'Convert to MP4' button to automatically start the conversion",
+    "step1Title": "1. Select Video File",
+    "step1Desc": "Click the upload area or drag and drop to select a video file (WebM, MP4, MOV, AVI, MKV, FLV)",
+    "step2Title": "2. Choose Output Format & Convert",
+    "step2Desc": "Select your desired output format (MP4 or WebM) from the dropdown and click the convert button",
     "step3Title": "3. Download",
-    "step3Desc": "Once conversion is complete, click 'Download MP4' button to download the file"
+    "step3Desc": "Once conversion is complete, click the download button to save your converted file"
   },
   "faq": {
     "title": "Frequently Asked Questions (FAQ)",
-    "q1": "What is WebM?",
-    "a1": "WebM is an open-source video format developed by Google, primarily used on the web. However, it may not play on some devices or players, requiring conversion to MP4.",
+    "q1": "What video formats are supported?",
+    "a1": "We support converting between multiple video formats including WebM, MP4, MOV, AVI, MKV, and FLV. You can convert any of these formats to either MP4 or WebM.",
     "q2": "Where are converted files stored?",
     "a2": "Converted files are temporarily stored on the server and automatically deleted after 1 hour. After downloading, they are immediately saved to your browser's download folder.",
     "q3": "Is there a file size limit?",

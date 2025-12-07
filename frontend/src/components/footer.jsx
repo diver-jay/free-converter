@@ -44,12 +44,18 @@ function Footer() {
             textAlign: "center",
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{ minWidth: "152px", whiteSpace: "nowrap", opacity: 0.8 }}
-          >
-            {t("footer.info")}
-          </Typography>
+          <Box
+            component="img"
+            src="/logo.svg"
+            alt={t("footer.info")}
+            sx={{
+              filter: "grayscale(100%)",
+              opacity: 0.7,
+              width: 180,
+              height: "auto",
+              minWidth: "152px",
+            }}
+          />
           <Typography variant="body1" sx={{ opacity: 0.8 }}>
             {t("footer.poweredBy")}
           </Typography>

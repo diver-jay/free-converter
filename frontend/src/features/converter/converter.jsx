@@ -199,15 +199,19 @@ function Converter() {
                   <Box sx={{ display: "flex" }}>
                     <ButtonGroup
                       variant="contained"
-                      size="medium"
                       disabled={uploading}
+                      sx={{
+                        "& .MuiButton-root": {
+                          fontSize: { xs: "0.8rem", sm: "0.875rem" },
+                        },
+                      }}
                     >
                       <Button
-                        startIcon={<CloudUpload />}
+                        startIcon={<CloudUpload sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }} />}
                         onClick={handleUpload}
                         sx={{
-                          py: 1,
-                          px: 3,
+                          py: { xs: 0.75, sm: 1 },
+                          px: { xs: 1.5, sm: 3 },
                         }}
                       >
                         {uploading
@@ -217,11 +221,11 @@ function Converter() {
                       <Button
                         onClick={handleMenuClick}
                         sx={{
-                          px: 1.5,
+                          px: { xs: 1, sm: 1.5 },
                           minWidth: "auto",
                         }}
                       >
-                        <ArrowDropDown />
+                        <ArrowDropDown sx={{ fontSize: { xs: "1.25rem", sm: "1.5rem" } }} />
                       </Button>
                     </ButtonGroup>
                   </Box>
@@ -277,6 +281,30 @@ function Converter() {
                 selected={outputFormat === "webm"}
               >
                 WebM
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFormatSelect("mov")}
+                selected={outputFormat === "mov"}
+              >
+                MOV
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFormatSelect("avi")}
+                selected={outputFormat === "avi"}
+              >
+                AVI
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFormatSelect("mkv")}
+                selected={outputFormat === "mkv"}
+              >
+                MKV
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFormatSelect("flv")}
+                selected={outputFormat === "flv"}
+              >
+                FLV
               </MenuItem>
             </Menu>
           </Stack>
