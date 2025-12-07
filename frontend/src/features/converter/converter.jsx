@@ -11,6 +11,9 @@ import {
   Alert,
   Stack,
   Paper,
+  ButtonGroup,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import {
   CloudUpload,
@@ -18,6 +21,7 @@ import {
   Download,
   Refresh,
   VideoFile,
+  ArrowDropDown,
 } from "@mui/icons-material";
 import { spacing } from "../../theme";
 
@@ -29,14 +33,22 @@ function Converter() {
   const [downloadUrl, setDownloadUrl] = useState("");
   const [error, setError] = useState("");
   const [fileName, setFileName] = useState("");
+  const [outputFormat, setOutputFormat] = useState("mp4");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+
+  const allowedExtensions = [".webm", ".mp4", ".mov", ".avi", ".mkv", ".flv"];
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      if (!selectedFile.name.toLowerCase().endsWith(".webm")) {
-        setError(t("errors.selectWebm"));
+      const fileExt = selectedFile.name.toLowerCase().match(/\.[^.]+$/)?.[0];
+      if (!fileExt || !allowedExtensions.includes(fileExt)) {
+        setError(
+          "Please select a valid video file (WebM, MP4, MOV, AVI, MKV, or FLV)"
+        );
         setFile(null);
         return;
       }
@@ -45,6 +57,19 @@ function Converter() {
       setDownloadUrl("");
       setFileName("");
     }
+  };
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleFormatSelect = (format) => {
+    setOutputFormat(format);
+    handleMenuClose();
   };
 
   const handleUpload = async () => {
@@ -60,6 +85,7 @@ function Converter() {
 
     const formData = new FormData();
     formData.append("video", file);
+    formData.append("outputFormat", outputFormat);
 
     try {
       const response = await axios.post(`${API_URL}/api/upload`, formData, {
@@ -100,7 +126,8 @@ function Converter() {
     setDownloadUrl("");
     setError("");
     setFileName("");
-    document.getElementById("file-input").value = "";
+    const fileInput = document.getElementById("file-input");
+    if (fileInput) fileInput.value = "";
   };
 
   return (
@@ -127,7 +154,7 @@ function Converter() {
               <input
                 id="file-input"
                 type="file"
-                accept=".webm"
+                accept=".webm,.mp4,.mov,.avi,.mkv,.flv"
                 onChange={handleFileChange}
                 style={{ display: "none" }}
               />
@@ -149,18 +176,54 @@ function Converter() {
             {/* File Info */}
             {file && (
               <Paper sx={{ p: 2, bgcolor: "primary.lighter" }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <VideoFile color="primary" />
-                  <Box>
-                    <Typography variant="body2">
-                      {t("upload.selected")}: <strong>{file.name}</strong>
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {t("upload.size")}:{" "}
-                      <strong>
-                        {(file.size / 1024 / 1024).toFixed(2)} MB
-                      </strong>
-                    </Typography>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <VideoFile color="primary" />
+                    <Box>
+                      <Typography variant="body2">
+                        {t("upload.selected")}: <strong>{file.name}</strong>
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {t("upload.size")}:{" "}
+                        <strong>{(file.size / 1024 / 1024).toFixed(2)} MB</strong>
+                      </Typography>
+                    </Box>
+                  </Stack>
+
+                  {/* Convert Button with Format Selector */}
+                  <Box sx={{ display: "flex" }}>
+                    <ButtonGroup
+                      variant="contained"
+                      size="medium"
+                      disabled={uploading}
+                    >
+                      <Button
+                        startIcon={<CloudUpload />}
+                        onClick={handleUpload}
+                        sx={{
+                          py: 1,
+                          px: 3,
+                        }}
+                      >
+                        {uploading
+                          ? t("upload.converting")
+                          : outputFormat.toUpperCase()}
+                      </Button>
+                      <Button
+                        onClick={handleMenuClick}
+                        sx={{
+                          px: 1.5,
+                          minWidth: "auto",
+                        }}
+                      >
+                        <ArrowDropDown />
+                      </Button>
+                    </ButtonGroup>
                   </Box>
                 </Stack>
               </Paper>
@@ -174,11 +237,7 @@ function Converter() {
                   value={progress}
                   sx={{ height: 8, borderRadius: 4 }}
                 />
-                <Typography
-                  variant="body2"
-                  textAlign="center"
-                  sx={{ mt: 1 }}
-                >
+                <Typography variant="body2" textAlign="center" sx={{ mt: 1 }}>
                   {progress < 100
                     ? t("upload.uploading", { progress })
                     : t("upload.converting")}
@@ -193,32 +252,47 @@ function Converter() {
               </Alert>
             )}
 
-            {/* Convert Button */}
-            <Button
-              variant="contained"
-              size="large"
-              startIcon={<CloudUpload />}
-              onClick={handleUpload}
-              disabled={!file || uploading}
-              fullWidth
-              sx={{ py: 1.5 }}
+            {/* Format Selector Menu */}
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
             >
-              {uploading
-                ? t("upload.converting")
-                : t("upload.convertButton")}
-            </Button>
+              <MenuItem
+                onClick={() => handleFormatSelect("mp4")}
+                selected={outputFormat === "mp4"}
+              >
+                MP4
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFormatSelect("webm")}
+                selected={outputFormat === "webm"}
+              >
+                WebM
+              </MenuItem>
+            </Menu>
           </Stack>
         ) : (
           <Stack spacing={3} alignItems="center" textAlign="center">
             {/* Success State */}
-            <CheckCircle sx={{ fontSize: spacing.xxl, color: "success.main" }} /> {/* 89px */}
+            <CheckCircle
+              sx={{ fontSize: spacing.xxl, color: "success.main" }}
+            />{" "}
+            {/* 89px */}
             <Typography variant="h4" fontWeight="bold">
               {t("upload.conversionComplete")}
             </Typography>
             <Typography variant="h6" color="text.secondary">
               {fileName}
             </Typography>
-
             {/* Action Buttons */}
             <Stack
               direction={{ xs: "column", sm: "row" }}

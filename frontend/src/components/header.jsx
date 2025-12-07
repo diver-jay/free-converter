@@ -28,7 +28,7 @@ function Header() {
         }}
       >
         <Typography variant="h4" fontWeight="bold" color="black">
-          Open convert
+          OpenConvert
         </Typography>
 
         <LanguageSwitcher />
