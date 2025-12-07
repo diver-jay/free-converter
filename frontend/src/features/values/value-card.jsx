@@ -15,11 +15,15 @@ function ValueCard({ icon, titleKey, descriptionKey }) {
       }}
     >
       <Box sx={{ mb: 2, color: "primary.main" }}>{icon}</Box>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
+      <Typography variant="h5" fontWeight="bold" gutterBottom>
         {t(titleKey)}
       </Typography>
 
-      <Typography variant="body2" color="text.secondary" sx={{ textAlign: "justify" }}>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{ textAlign: "justify" }}
+      >
         {t(descriptionKey)}
       </Typography>
     </Box>

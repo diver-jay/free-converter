@@ -53,7 +53,11 @@ function FAQ() {
       </Box>
 
       <Collapse in={isOpen}>
-        <Grid container spacing={2} sx={{ width: { xs: "320px", md: "440px" } }}>
+        <Grid
+          container
+          spacing={2}
+          sx={{ width: { xs: "320px", md: "440px" } }}
+        >
           <Grid item xs={12}>
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMore />}>

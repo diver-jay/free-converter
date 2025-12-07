@@ -56,9 +56,6 @@ function Footer() {
               minWidth: "152px",
             }}
           />
-          <Typography variant="body1" sx={{ opacity: 0.8 }}>
-            {t("footer.poweredBy")}
-          </Typography>
         </Box>
       </Box>
     </Box>

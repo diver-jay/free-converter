@@ -6,7 +6,8 @@ function Header() {
     <Box
       sx={{
         width: "100%",
-        background: "white",
+        background: "#C30000", // 2번: 다크 레드
+        color: "#FFD700", // 골드 텍스트
         boxShadow: "0 3px 24px rgba(0,0,0,.08)",
       }}
     >
@@ -33,8 +34,8 @@ function Header() {
           alt="OpenConvert"
           sx={{
             height: {
-              xs: "32px",
-              md: "40px",
+              xs: "50px",
+              md: "80px",
             },
           }}
         />
