@@ -17,10 +17,11 @@ function Layout({ children }) {
       <Header />
 
       <Container
-        maxWidth="md"
+        maxWidth={false}
         sx={{
           flex: 1,
           py: `${spacing.lg}px`,
+          maxWidth: "730px",
         }}
       >
         {children}
