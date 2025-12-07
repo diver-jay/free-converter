@@ -39,7 +39,7 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 500 * 1024 * 1024 }, // 500MB limit
   fileFilter: (req, file, cb) => {
-    // Phase 1-2: Support common input formats
+    // Support common video formats
     const allowedExtensions = [".webm", ".mp4", ".mov", ".avi", ".mkv", ".flv"];
     const allowedMimeTypes = [
       "video/webm",
@@ -62,6 +62,30 @@ const upload = multer({
           "Only video files are allowed (webm, mp4, mov, avi, mkv, flv)"
         )
       );
+    }
+  },
+});
+
+// Configure multer for document uploads
+const documentUpload = multer({
+  storage: storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB limit
+  fileFilter: (req, file, cb) => {
+    // Support PDF and DOCX formats
+    const allowedExtensions = [".pdf", ".docx"];
+    const allowedMimeTypes = [
+      "application/pdf",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (
+      allowedExtensions.includes(ext) ||
+      allowedMimeTypes.includes(file.mimetype)
+    ) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only PDF and DOCX files are allowed"));
     }
   },
 });
@@ -97,14 +121,26 @@ setInterval(cleanupOldFiles, 30 * 60 * 1000);
 // Routes
 app.get("/", (req, res) => {
   res.json({
-    message: "Video Format Converter API",
-    description: "Convert between any popular video formats",
-    supportedFormats: {
-      input: ["webm", "mp4", "mov", "avi", "mkv", "flv"],
-      output: ["mp4", "webm", "mov", "avi", "mkv", "flv"],
+    message: "Universal Format Converter API",
+    description: "Convert between video formats and document formats",
+    features: {
+      video: {
+        supportedFormats: {
+          input: ["webm", "mp4", "mov", "avi", "mkv", "flv"],
+          output: ["mp4", "webm", "mov", "avi", "mkv", "flv"],
+        },
+        combinations: "36 combinations (any to any)",
+      },
+      document: {
+        supportedFormats: {
+          input: ["pdf", "docx"],
+          output: ["pdf", "docx"],
+        },
+        combinations: "PDF ↔ DOCX (bidirectional)",
+      },
     },
     endpoints: {
-      upload: {
+      videoUpload: {
         method: "POST",
         path: "/api/upload",
         description: "Upload and convert video",
@@ -114,10 +150,19 @@ app.get("/", (req, res) => {
             "Output format: mp4, webm, mov, avi, mkv, or flv (optional, default: mp4)",
         },
       },
+      documentUpload: {
+        method: "POST",
+        path: "/api/upload/document",
+        description: "Upload and convert document (PDF ↔ DOCX)",
+        parameters: {
+          document: "Document file (form-data)",
+          note: "Output format is automatically determined (PDF→DOCX, DOCX→PDF)",
+        },
+      },
       download: {
         method: "GET",
         path: "/api/download/:filename",
-        description: "Download converted file",
+        description: "Download converted file (video or document)",
       },
       health: {
         method: "GET",
@@ -125,14 +170,16 @@ app.get("/", (req, res) => {
         description: "API health check",
       },
     },
-    conversionMatrix: "Any input format → Any output format (36 combinations)",
-    popularConversions: [
-      "webm → mp4 (web to universal)",
-      "mov → mp4 (Apple to universal)",
-      "avi → mp4 (legacy to modern)",
-      "mp4 → webm (web optimization)",
-      "mkv → mp4 (compatibility)",
-    ],
+    popularConversions: {
+      video: [
+        "webm → mp4",
+        "mov → mp4",
+        "avi → mp4",
+        "mp4 → webm",
+        "mkv → mp4",
+      ],
+      document: ["pdf → docx", "docx → pdf"],
+    },
   });
 });
 
@@ -223,6 +270,80 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
     })
     .run();
 });
+
+// Document conversion endpoint (PDF ↔ DOCX)
+app.post(
+  "/api/upload/document",
+  documentUpload.single("document"),
+  async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    const inputExt = path.extname(req.file.originalname).toLowerCase();
+    const inputPath = req.file.path;
+
+    // Determine output format based on input
+    let outputFormat;
+    if (inputExt === ".pdf") {
+      outputFormat = "docx";
+    } else if (inputExt === ".docx") {
+      outputFormat = "pdf";
+    } else {
+      return res.status(400).json({ error: "Invalid file format" });
+    }
+
+    const outputFilename = `${path.parse(req.file.filename).name}.${outputFormat}`;
+    const outputPath = path.join(CONVERTED_DIR, outputFilename);
+
+    console.log(
+      `Converting ${req.file.originalname} to ${outputFormat.toUpperCase()}...`
+    );
+
+    // Use LibreOffice for conversion
+    const { exec } = require("child_process");
+    const command = `soffice --headless --convert-to ${outputFormat} "${inputPath}" --outdir "${CONVERTED_DIR}"`;
+
+    exec(command, (error, stdout, stderr) => {
+      // Delete original uploaded file
+      fs.unlink(inputPath, (err) => {
+        if (err) console.error("Error deleting uploaded file:", err);
+      });
+
+      if (error) {
+        console.error("Conversion error:", error);
+        return res.status(500).json({
+          error: "Conversion failed",
+          details: error.message,
+        });
+      }
+
+      // LibreOffice creates file with original name + new extension
+      const expectedOutput = path.join(
+        CONVERTED_DIR,
+        `${path.parse(req.file.filename).name}.${outputFormat}`
+      );
+
+      if (!fs.existsSync(expectedOutput)) {
+        return res.status(500).json({
+          error: "Conversion failed",
+          details: "Output file not created",
+        });
+      }
+
+      console.log("Conversion completed");
+
+      res.json({
+        success: true,
+        message: "Conversion successful",
+        downloadUrl: `/api/download/${outputFilename}`,
+        filename: outputFilename,
+        inputFormat: inputExt,
+        outputFormat: outputFormat,
+      });
+    });
+  }
+);
 
 // Download converted file
 app.get("/api/download/:filename", (req, res) => {
