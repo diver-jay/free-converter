@@ -32,8 +32,8 @@ RUN npm install --only=production --no-optional
 # Copy application files
 COPY . .
 
-# Create directories for uploads and converted files
-RUN mkdir -p uploads converted
+# Create directories for uploads, converted files, and logs
+RUN mkdir -p uploads converted logs
 
 # Expose port
 EXPOSE 3001

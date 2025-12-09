@@ -17,12 +17,32 @@ app.use(express.json());
 // Create necessary directories
 const UPLOAD_DIR = path.join(__dirname, "uploads");
 const CONVERTED_DIR = path.join(__dirname, "converted");
+const LOG_DIR = path.join(__dirname, "logs");
 
-[UPLOAD_DIR, CONVERTED_DIR].forEach((dir) => {
+[UPLOAD_DIR, CONVERTED_DIR, LOG_DIR].forEach((dir) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
 });
+
+// Logging utility
+function logConversion(type, data) {
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    type: type, // 'video' or 'document'
+    ...data
+  };
+
+  const today = new Date().toISOString().split('T')[0];
+  const logFile = path.join(LOG_DIR, `conversions-${today}.json`);
+
+  try {
+    fs.appendFileSync(logFile, JSON.stringify(logEntry) + '\n');
+    console.log(`📊 Logged ${type} conversion:`, logEntry);
+  } catch (error) {
+    console.error('Failed to write log:', error);
+  }
+}
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -240,6 +260,15 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
     .on("end", () => {
       console.log("Conversion completed");
 
+      // Log successful conversion
+      logConversion('video', {
+        success: true,
+        inputFormat: path.extname(req.file.originalname).toLowerCase(),
+        outputFormat: outputFormat,
+        fileSize: req.file.size,
+        originalName: req.file.originalname
+      });
+
       // Delete original uploaded file
       fs.unlink(inputPath, (err) => {
         if (err) console.error("Error deleting uploaded file:", err);
@@ -256,6 +285,16 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
     })
     .on("error", (err) => {
       console.error("Conversion error:", err);
+
+      // Log failed conversion
+      logConversion('video', {
+        success: false,
+        inputFormat: path.extname(req.file.originalname).toLowerCase(),
+        outputFormat: outputFormat,
+        fileSize: req.file.size,
+        originalName: req.file.originalname,
+        error: err.message
+      });
 
       // Clean up files on error
       fs.unlink(inputPath, () => {});
@@ -313,6 +352,18 @@ app.post(
 
         if (error) {
           console.error("Conversion error:", error);
+
+          // Log failed conversion
+          logConversion('document', {
+            success: false,
+            method: 'libreoffice',
+            inputFormat: inputExt,
+            outputFormat: outputFormat,
+            fileSize: req.file.size,
+            originalName: req.file.originalname,
+            error: error.message
+          });
+
           return res.status(500).json({
             error: "Conversion failed",
             details: error.message,
@@ -333,6 +384,16 @@ app.post(
         }
 
         console.log("Conversion completed (LibreOffice)");
+
+        // Log successful conversion
+        logConversion('document', {
+          success: true,
+          method: 'libreoffice',
+          inputFormat: inputExt,
+          outputFormat: outputFormat,
+          fileSize: req.file.size,
+          originalName: req.file.originalname
+        });
 
         res.json({
           success: true,
@@ -379,6 +440,16 @@ app.post(
         if (code === 0 && fs.existsSync(outputPath)) {
           console.log("Conversion completed (Python pdf2docx)");
 
+          // Log successful conversion
+          logConversion('document', {
+            success: true,
+            method: 'pdf2docx',
+            inputFormat: inputExt,
+            outputFormat: outputFormat,
+            fileSize: req.file.size,
+            originalName: req.file.originalname
+          });
+
           res.json({
             success: true,
             message: "Conversion successful",
@@ -389,6 +460,18 @@ app.post(
           });
         } else {
           console.error(`Python script exited with code ${code}`);
+
+          // Log failed conversion
+          logConversion('document', {
+            success: false,
+            method: 'pdf2docx',
+            inputFormat: inputExt,
+            outputFormat: outputFormat,
+            fileSize: req.file.size,
+            originalName: req.file.originalname,
+            error: stderrData || "PDF to DOCX conversion failed"
+          });
+
           res.status(500).json({
             error: "Conversion failed",
             details: stderrData || "PDF to DOCX conversion failed",
@@ -399,6 +482,17 @@ app.post(
       pythonProcess.on("error", (error) => {
         console.error("Failed to start Python process:", error);
         fs.unlink(inputPath, () => {});
+
+        // Log failed conversion
+        logConversion('document', {
+          success: false,
+          method: 'pdf2docx',
+          inputFormat: inputExt,
+          outputFormat: outputFormat,
+          fileSize: req.file.size,
+          originalName: req.file.originalname,
+          error: "Python process failed: " + error.message
+        });
 
         res.status(500).json({
           error: "Conversion service unavailable",
