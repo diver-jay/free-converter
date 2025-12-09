@@ -300,48 +300,112 @@ app.post(
       `Converting ${req.file.originalname} to ${outputFormat.toUpperCase()}...`
     );
 
-    // Use LibreOffice for conversion
-    const { exec } = require("child_process");
-    const command = `soffice --headless --convert-to ${outputFormat} "${inputPath}" --outdir "${CONVERTED_DIR}"`;
+    // CASE 1: DOCX -> PDF (Use LibreOffice)
+    if (inputExt === ".docx") {
+      const { exec } = require("child_process");
+      const command = `soffice --headless --convert-to ${outputFormat} "${inputPath}" --outdir "${CONVERTED_DIR}"`;
 
-    exec(command, (error, stdout, stderr) => {
-      // Delete original uploaded file
-      fs.unlink(inputPath, (err) => {
-        if (err) console.error("Error deleting uploaded file:", err);
+      exec(command, (error, stdout, stderr) => {
+        // Delete original uploaded file
+        fs.unlink(inputPath, (err) => {
+          if (err) console.error("Error deleting uploaded file:", err);
+        });
+
+        if (error) {
+          console.error("Conversion error:", error);
+          return res.status(500).json({
+            error: "Conversion failed",
+            details: error.message,
+          });
+        }
+
+        // LibreOffice creates file with original name + new extension
+        const expectedOutput = path.join(
+          CONVERTED_DIR,
+          `${path.parse(req.file.filename).name}.${outputFormat}`
+        );
+
+        if (!fs.existsSync(expectedOutput)) {
+          return res.status(500).json({
+            error: "Conversion failed",
+            details: "Output file not created",
+          });
+        }
+
+        console.log("Conversion completed (LibreOffice)");
+
+        res.json({
+          success: true,
+          message: "Conversion successful",
+          downloadUrl: `/api/download/${outputFilename}`,
+          filename: outputFilename,
+          inputFormat: inputExt,
+          outputFormat: outputFormat,
+        });
+      });
+    }
+    // CASE 2: PDF -> DOCX (Use Python pdf2docx)
+    else if (inputExt === ".pdf") {
+      const { spawn } = require("child_process");
+      const pythonScript = path.join(__dirname, "convert_pdf.py");
+
+      console.log("Using Python pdf2docx for PDF to DOCX conversion...");
+
+      const pythonProcess = spawn("python3", [
+        pythonScript,
+        inputPath,
+        outputPath,
+      ]);
+
+      let stdoutData = "";
+      let stderrData = "";
+
+      pythonProcess.stdout.on("data", (data) => {
+        stdoutData += data.toString();
+        console.log(`Python: ${data.toString().trim()}`);
       });
 
-      if (error) {
-        console.error("Conversion error:", error);
-        return res.status(500).json({
-          error: "Conversion failed",
+      pythonProcess.stderr.on("data", (data) => {
+        stderrData += data.toString();
+        console.error(`Python error: ${data.toString().trim()}`);
+      });
+
+      pythonProcess.on("close", (code) => {
+        // Delete original uploaded file
+        fs.unlink(inputPath, (err) => {
+          if (err) console.error("Error deleting uploaded file:", err);
+        });
+
+        if (code === 0 && fs.existsSync(outputPath)) {
+          console.log("Conversion completed (Python pdf2docx)");
+
+          res.json({
+            success: true,
+            message: "Conversion successful",
+            downloadUrl: `/api/download/${outputFilename}`,
+            filename: outputFilename,
+            inputFormat: inputExt,
+            outputFormat: outputFormat,
+          });
+        } else {
+          console.error(`Python script exited with code ${code}`);
+          res.status(500).json({
+            error: "Conversion failed",
+            details: stderrData || "PDF to DOCX conversion failed",
+          });
+        }
+      });
+
+      pythonProcess.on("error", (error) => {
+        console.error("Failed to start Python process:", error);
+        fs.unlink(inputPath, () => {});
+
+        res.status(500).json({
+          error: "Conversion service unavailable",
           details: error.message,
         });
-      }
-
-      // LibreOffice creates file with original name + new extension
-      const expectedOutput = path.join(
-        CONVERTED_DIR,
-        `${path.parse(req.file.filename).name}.${outputFormat}`
-      );
-
-      if (!fs.existsSync(expectedOutput)) {
-        return res.status(500).json({
-          error: "Conversion failed",
-          details: "Output file not created",
-        });
-      }
-
-      console.log("Conversion completed");
-
-      res.json({
-        success: true,
-        message: "Conversion successful",
-        downloadUrl: `/api/download/${outputFilename}`,
-        filename: outputFilename,
-        inputFormat: inputExt,
-        outputFormat: outputFormat,
       });
-    });
+    }
   }
 );
 
