@@ -61,6 +61,14 @@ function Converter() {
       setError("");
       setDownloadUrl("");
       setFileName("");
+
+      // Set default output format based on file type
+      if (isDocumentFile(selectedFile)) {
+        const ext = selectedFile.name.split('.').pop().toLowerCase();
+        setOutputFormat(ext === 'pdf' ? 'docx' : 'pdf');
+      } else {
+        setOutputFormat('mp4');
+      }
     }
   };
 
@@ -95,6 +103,7 @@ function Converter() {
     // Video files use /api/upload endpoint
     if (isDocument) {
       formData.append("document", file);
+      formData.append("outputFormat", outputFormat);
     } else {
       formData.append("video", file);
       formData.append("outputFormat", outputFormat);
@@ -212,65 +221,43 @@ function Converter() {
 
                   {/* Convert Button with Format Selector */}
                   <Box sx={{ display: "flex" }}>
-                    {isDocumentFile(file) ? (
-                      // Document files: Simple button without dropdown
+                    <ButtonGroup
+                      variant="contained"
+                      disabled={uploading}
+                      sx={{
+                        "& .MuiButton-root": {
+                          fontSize: { xs: "0.8rem", sm: "0.875rem" },
+                        },
+                      }}
+                    >
                       <Button
-                        variant="contained"
                         startIcon={
                           <CloudUpload
                             sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
                           />
                         }
                         onClick={handleUpload}
-                        disabled={uploading}
                         sx={{
                           py: { xs: 0.75, sm: 1 },
                           px: { xs: 1.5, sm: 3 },
-                          fontSize: { xs: "0.8rem", sm: "0.875rem" },
                         }}
                       >
-                        {uploading ? t("upload.converting") : "CONVERT"}
+                        {uploading
+                          ? t("upload.converting")
+                          : outputFormat.toUpperCase()}
                       </Button>
-                    ) : (
-                      // Video files: Button group with dropdown
-                      <ButtonGroup
-                        variant="contained"
-                        disabled={uploading}
+                      <Button
+                        onClick={handleMenuClick}
                         sx={{
-                          "& .MuiButton-root": {
-                            fontSize: { xs: "0.8rem", sm: "0.875rem" },
-                          },
+                          px: { xs: 1, sm: 1.5 },
+                          minWidth: "auto",
                         }}
                       >
-                        <Button
-                          startIcon={
-                            <CloudUpload
-                              sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
-                            />
-                          }
-                          onClick={handleUpload}
-                          sx={{
-                            py: { xs: 0.75, sm: 1 },
-                            px: { xs: 1.5, sm: 3 },
-                          }}
-                        >
-                          {uploading
-                            ? t("upload.converting")
-                            : outputFormat.toUpperCase()}
-                        </Button>
-                        <Button
-                          onClick={handleMenuClick}
-                          sx={{
-                            px: { xs: 1, sm: 1.5 },
-                            minWidth: "auto",
-                          }}
-                        >
-                          <ArrowDropDown
-                            sx={{ fontSize: { xs: "1.25rem", sm: "1.5rem" } }}
-                          />
-                        </Button>
-                      </ButtonGroup>
-                    )}
+                        <ArrowDropDown
+                          sx={{ fontSize: { xs: "1.25rem", sm: "1.5rem" } }}
+                        />
+                      </Button>
+                    </ButtonGroup>
                   </Box>
                 </Stack>
               </Paper>
@@ -313,42 +300,63 @@ function Converter() {
                 horizontal: "right",
               }}
             >
-              <MenuItem
-                onClick={() => handleFormatSelect("mp4")}
-                selected={outputFormat === "mp4"}
-              >
-                MP4
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleFormatSelect("webm")}
-                selected={outputFormat === "webm"}
-              >
-                WebM
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleFormatSelect("mov")}
-                selected={outputFormat === "mov"}
-              >
-                MOV
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleFormatSelect("avi")}
-                selected={outputFormat === "avi"}
-              >
-                AVI
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleFormatSelect("mkv")}
-                selected={outputFormat === "mkv"}
-              >
-                MKV
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleFormatSelect("flv")}
-                selected={outputFormat === "flv"}
-              >
-                FLV
-              </MenuItem>
+              {file && isDocumentFile(file) ? (
+                // Document: PDF <-> DOCX (2 options)
+                <>
+                  <MenuItem
+                    onClick={() => handleFormatSelect("pdf")}
+                    selected={outputFormat === "pdf"}
+                  >
+                    PDF
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleFormatSelect("docx")}
+                    selected={outputFormat === "docx"}
+                  >
+                    DOCX (Word)
+                  </MenuItem>
+                </>
+              ) : (
+                // Video: 6 format options
+                <>
+                  <MenuItem
+                    onClick={() => handleFormatSelect("mp4")}
+                    selected={outputFormat === "mp4"}
+                  >
+                    MP4
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleFormatSelect("webm")}
+                    selected={outputFormat === "webm"}
+                  >
+                    WebM
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleFormatSelect("mov")}
+                    selected={outputFormat === "mov"}
+                  >
+                    MOV
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleFormatSelect("avi")}
+                    selected={outputFormat === "avi"}
+                  >
+                    AVI
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleFormatSelect("mkv")}
+                    selected={outputFormat === "mkv"}
+                  >
+                    MKV
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleFormatSelect("flv")}
+                    selected={outputFormat === "flv"}
+                  >
+                    FLV
+                  </MenuItem>
+                </>
+              )}
             </Menu>
           </Stack>
         ) : (

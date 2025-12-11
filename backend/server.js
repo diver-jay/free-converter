@@ -322,14 +322,35 @@ app.post(
     const inputExt = path.extname(req.file.originalname).toLowerCase();
     const inputPath = req.file.path;
 
-    // Determine output format based on input
-    let outputFormat;
-    if (inputExt === ".pdf") {
-      outputFormat = "docx";
-    } else if (inputExt === ".docx") {
-      outputFormat = "pdf";
-    } else {
-      return res.status(400).json({ error: "Invalid file format" });
+    // Get output format from request, or default to opposite format
+    let outputFormat = req.body.outputFormat || req.query.outputFormat;
+
+    // If no output format specified, determine based on input
+    if (!outputFormat) {
+      if (inputExt === ".pdf") {
+        outputFormat = "docx";
+      } else if (inputExt === ".docx") {
+        outputFormat = "pdf";
+      } else {
+        return res.status(400).json({ error: "Invalid file format" });
+      }
+    }
+
+    // Validate output format
+    const allowedDocumentFormats = ["pdf", "docx"];
+    if (!allowedDocumentFormats.includes(outputFormat)) {
+      return res.status(400).json({
+        error: "Invalid output format",
+        allowedFormats: allowedDocumentFormats,
+      });
+    }
+
+    // Check if input and output formats are the same
+    if (inputExt === `.${outputFormat}`) {
+      return res.status(400).json({
+        error: "Input and output formats cannot be the same",
+        message: `Your file is already in ${outputFormat.toUpperCase()} format`,
+      });
     }
 
     const outputFilename = `${path.parse(req.file.filename).name}.${outputFormat}`;
