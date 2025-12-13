@@ -4,56 +4,59 @@ import { Typography, Box, Paper, Alert, Chip, Stack } from "@mui/material";
 import { Lock, Email, CreditCard, Speed } from "@mui/icons-material";
 import BlogLayout from "@/components/BlogLayout";
 import Converter from "@/features/converter/converter";
+import { useTranslations } from "next-intl";
 
 function PDFToWordBlog() {
+  const t = useTranslations('blog.pdfToWord');
+
   return (
-    <BlogLayout title="Convert PDF to Word for Free: No Sign-up, No Email Required">
+    <BlogLayout title={t('title')}>
       <Typography variant="body1" paragraph>
-        Need to edit a PDF but stuck because it's locked? Want to convert PDF to Word but <strong>sick of sites asking for your email, credit card, or "free trial"</strong>? You're in the right place.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('intro') }} />
       </Typography>
 
       <Paper sx={{ p: 3, bgcolor: "success.lighter", mb: 3 }}>
         <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap" useFlexGap>
-          <Chip icon={<Lock />} label="No Sign-up" color="success" />
-          <Chip icon={<Email />} label="No Email" color="success" />
-          <Chip icon={<CreditCard />} label="No Payment" color="success" />
-          <Chip icon={<Speed />} label="Unlimited" color="success" />
+          <Chip icon={<Lock />} label={t('chipNoSignup')} color="success" />
+          <Chip icon={<Email />} label={t('chipNoEmail')} color="success" />
+          <Chip icon={<CreditCard />} label={t('chipNoPayment')} color="success" />
+          <Chip icon={<Speed />} label={t('chipUnlimited')} color="success" />
         </Stack>
         <Typography variant="body1" sx={{ mt: 2 }}>
-          <strong>This tool is genuinely 100% free.</strong> No hidden costs, no daily limits, no watermarks, no BS.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('genuinelyFree') }} />
         </Typography>
       </Paper>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        Why Most "Free" PDF Converters Aren't Actually Free
+        {t('whyNotFreeTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Let's be honest: the internet is full of "free" PDF converters that pull this nonsense:
+        {t('whyNotFreeDesc')}
       </Typography>
 
       <Typography variant="body1" component="div" paragraph>
-        ❌ <strong>"Free trial"</strong> that auto-charges your card after 7 days
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whyNotFree1') }} />
         <br />
-        ❌ <strong>"Enter your email"</strong> to unlock your file (and get spammed forever)
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whyNotFree2') }} />
         <br />
-        ❌ <strong>2 conversions per day limit</strong> unless you upgrade to "Pro"
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whyNotFree3') }} />
         <br />
-        ❌ <strong>Watermarks plastered</strong> all over your converted document
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whyNotFree4') }} />
         <br />
-        ❌ <strong>File size limits</strong> like "max 5MB" (useless for real documents)
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whyNotFree5') }} />
       </Typography>
 
       <Typography variant="body1" paragraph>
-        This is why people end up paying $15/month for Adobe Acrobat just to convert a single PDF. <strong>It doesn't have to be this way.</strong>
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whyNotFreeConclusion') }} />
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        Convert PDF to Word Right Here (Seriously Free)
+        {t('convertHereTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        No catch. No tricks. Just drag your PDF below and convert it:
+        {t('convertHereDesc')}
       </Typography>
 
       {/* EMBEDDED CONVERTER */}
@@ -63,192 +66,192 @@ function PDFToWordBlog() {
 
       <Alert severity="info" sx={{ my: 3 }}>
         <Typography variant="body2">
-          <strong>Your file is automatically deleted after 1 hour</strong> for privacy. We don't store, track, or share your documents. Period.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('privacyNote') }} />
         </Typography>
       </Alert>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        When Do You Need to Convert PDF to Word?
+        {t('whenNeedTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Here are the most common reasons people convert PDFs to Word (and why this tool exists):
-      </Typography>
-
-      <Typography variant="h6" component="h3" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        1. Editing Contracts or Agreements
-      </Typography>
-      <Typography variant="body1" paragraph>
-        Someone sent you a contract as PDF, but you need to change a few clauses before signing. <strong>Converting to Word lets you edit</strong> without expensive software.
+        {t('whenNeedDesc')}
       </Typography>
 
       <Typography variant="h6" component="h3" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        2. Updating Your Resume
+        {t('useCase1Title')}
       </Typography>
       <Typography variant="body1" paragraph>
-        Your resume is in PDF format, but you need to add your new job or update a skill. Word makes editing much easier than dealing with PDF editors.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('useCase1Desc') }} />
       </Typography>
 
       <Typography variant="h6" component="h3" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        3. Extracting Text from Scanned Documents
+        {t('useCase2Title')}
       </Typography>
       <Typography variant="body1" paragraph>
-        Got a scanned PDF (like a printed form or old document)? Converting to Word can help extract the text - though results vary depending on scan quality.
+        {t('useCase2Desc')}
       </Typography>
 
       <Typography variant="h6" component="h3" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        4. Reusing Content from Reports or Papers
+        {t('useCase3Title')}
       </Typography>
       <Typography variant="body1" paragraph>
-        Need to copy sections from a research paper, report, or whitepaper? Word format makes it easy to grab text, images, and tables without formatting headaches.
+        {t('useCase3Desc')}
+      </Typography>
+
+      <Typography variant="h6" component="h3" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
+        {t('useCase4Title')}
+      </Typography>
+      <Typography variant="body1" paragraph>
+        {t('useCase4Desc')}
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        Will My Formatting Stay Intact?
+        {t('formattingTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        <strong>Mostly, yes</strong> - but it depends on how complex your PDF is:
+        <span dangerouslySetInnerHTML={{ __html: t.raw('formattingDesc') }} />
       </Typography>
 
       <Paper sx={{ p: 3, bgcolor: "background.default", mb: 3 }}>
         <Typography variant="body1" component="div">
-          <strong>✅ Works Great For:</strong>
+          <span dangerouslySetInnerHTML={{ __html: t.raw('worksGreatTitle') }} />
           <ul>
-            <li>Standard text documents (reports, essays, letters)</li>
-            <li>Simple tables and bullet points</li>
-            <li>Basic images embedded in text</li>
-            <li>Single or double-column layouts</li>
+            <li>{t('worksGreat1')}</li>
+            <li>{t('worksGreat2')}</li>
+            <li>{t('worksGreat3')}</li>
+            <li>{t('worksGreat4')}</li>
           </ul>
 
-          <strong>⚠️ May Need Manual Fixes:</strong>
+          <span dangerouslySetInnerHTML={{ __html: t.raw('mayNeedFixTitle') }} />
           <ul>
-            <li>Complex multi-column magazine layouts</li>
-            <li>Documents with lots of text boxes or shapes</li>
-            <li>Scanned PDFs (image-based, not searchable text)</li>
-            <li>Forms with fillable fields</li>
+            <li>{t('mayNeedFix1')}</li>
+            <li>{t('mayNeedFix2')}</li>
+            <li>{t('mayNeedFix3')}</li>
+            <li>{t('mayNeedFix4')}</li>
           </ul>
         </Typography>
       </Paper>
 
       <Alert severity="warning" sx={{ mb: 3 }}>
         <Typography variant="body2">
-          <strong>Pro Tip:</strong> After converting, always open the Word file and check for formatting issues. Look for missing images, scrambled tables, or misaligned text. Most documents convert perfectly, but complex layouts may need minor tweaks.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('formatWarning') }} />
         </Typography>
       </Alert>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        How Does This Differ from Google Docs or LibreOffice?
+        {t('compareTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Good question. Here's the comparison:
+        {t('compareDesc')}
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        Google Docs:
+        {t('googleDocsTitle')}
       </Typography>
       <Typography variant="body1" component="div" paragraph>
-        • ✅ Free and no install
+        {t('googleDocsPro1')}
         <br />
-        • ❌ Uploads to your Google Drive (privacy concern for sensitive docs)
+        {t('googleDocsCon1')}
         <br />
-        • ❌ Formatting often gets mangled worse than dedicated converters
+        {t('googleDocsCon2')}
         <br />
-        • ❌ Requires a Google account
+        {t('googleDocsCon3')}
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        LibreOffice (Desktop App):
+        {t('libreOfficeTitle')}
       </Typography>
       <Typography variant="body1" component="div" paragraph>
-        • ✅ Completely free and open-source
+        {t('libreOfficePro1')}
         <br />
-        • ✅ Good conversion quality
+        {t('libreOfficePro2')}
         <br />
-        • ❌ Requires downloading and installing software
+        {t('libreOfficeCon1')}
         <br />
-        • ❌ Slower for quick one-off conversions
+        {t('libreOfficeCon2')}
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        This Tool:
+        {t('thisToolTitle')}
       </Typography>
       <Typography variant="body1" component="div" paragraph>
-        • ✅ No sign-up, no email, no install
+        {t('thisToolPro1')}
         <br />
-        • ✅ Files auto-deleted after 1 hour (privacy)
+        {t('thisToolPro2')}
         <br />
-        • ✅ Fast web-based conversion using LibreOffice backend
+        {t('thisToolPro3')}
         <br />
-        • ✅ Unlimited use, no watermarks
+        {t('thisToolPro4')}
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        What About Converting Word to PDF?
+        {t('wordToPdfTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Yep, this tool does that too! Just upload a .docx file and select PDF as the output format. Use cases:
+        {t('wordToPdfDesc')}
       </Typography>
 
       <Typography variant="body1" component="div" paragraph>
-        • <strong>Job applications:</strong> Many companies want PDFs to preserve formatting
+        <span dangerouslySetInnerHTML={{ __html: t.raw('wordToPdfUse1') }} />
         <br />
-        • <strong>Printing:</strong> PDFs print exactly as they appear on screen
+        <span dangerouslySetInnerHTML={{ __html: t.raw('wordToPdfUse2') }} />
         <br />
-        • <strong>Sharing:</strong> PDFs are universally readable (no compatibility issues)
+        <span dangerouslySetInnerHTML={{ __html: t.raw('wordToPdfUse3') }} />
         <br />
-        • <strong>Security:</strong> PDFs are harder to accidentally edit
+        <span dangerouslySetInnerHTML={{ __html: t.raw('wordToPdfUse4') }} />
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        Common Questions
+        {t('faqTitle')}
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        Q: Is there a file size limit?
+        {t('faq1Q')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> Currently no hard limit, but very large files (100MB+) may take longer to convert. For best results, keep files under 100MB.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('faq1A') }} />
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        Q: Can I convert password-protected PDFs?
+        {t('faq2Q')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> No. You must unlock the PDF first (you'll need the password). This is for security reasons - we can't bypass PDF encryption.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('faq2A') }} />
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        Q: What file formats are supported besides PDF and Word?
+        {t('faq3Q')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> This tool also converts video files (MP4, WebM, MOV, AVI, MKV, FLV). Check the homepage for all supported formats.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('faq3A') }} />
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        Q: Why is this free? What's the catch?
+        {t('faq4Q')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> No catch. This project uses open-source tools (LibreOffice for conversion) and is supported by users who appreciate ad-free, privacy-respecting tools. If it's useful to you, that's enough.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('faq4A') }} />
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        The Bottom Line
+        {t('bottomLineTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        You don't need Adobe Acrobat. You don't need to sign up for shady "free trials." You don't need to give your email to yet another website.
+        {t('bottomLine1')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        <strong>Just drag your PDF, convert it, and get on with your life.</strong> That's it.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('bottomLine2') }} />
       </Typography>
 
       <Alert severity="success" sx={{ mt: 3 }}>
         <Typography variant="body2">
-          <strong>Bookmark this page</strong> if you found it useful. Next time you need to convert a PDF, you'll know exactly where to go.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('bookmarkMsg') }} />
         </Typography>
       </Alert>
     </BlogLayout>

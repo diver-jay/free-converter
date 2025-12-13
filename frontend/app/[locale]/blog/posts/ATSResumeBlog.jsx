@@ -3,91 +3,94 @@
 import { Typography, Box, Paper, Alert } from "@mui/material";
 import BlogLayout from "@/components/BlogLayout";
 import Converter from "@/features/converter/converter";
+import { useTranslations } from "next-intl";
 
 function ATSResumeBlog() {
+  const t = useTranslations('blog.atsResume');
+
   return (
-    <BlogLayout title="Submit resume in PDF or Word? Why format matters for ATS">
+    <BlogLayout title={t('title')}>
       <Typography variant="body1" paragraph>
-        You've spent hours perfecting your resume, but did you know that <strong>over 75% of resumes are rejected before a human ever sees them</strong>? The culprit? Applicant Tracking Systems (ATS) - and the wrong file format can be your downfall.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('intro') }} />
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        The ATS Problem: Why Your Resume Gets Lost
+        {t('atsProblemTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Applicant Tracking Systems scan your resume to extract information like your name, experience, and skills. Here's the catch: <strong>not all file formats are created equal</strong> when it comes to ATS compatibility.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('atsProblemDesc') }} />
       </Typography>
 
       <Typography variant="h5" component="h3" gutterBottom sx={{ mt: 3, fontWeight: 600 }}>
-        PDF vs Word: The Verdict
+        {t('pdfVsWordTitle')}
       </Typography>
 
       <Paper sx={{ p: 3, bgcolor: "primary.lighter", mb: 3 }}>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-          Quick Answer:
+          {t('quickAnswerTitle')}
         </Typography>
         <Typography variant="body1" paragraph>
-          <strong>Word (.docx) is generally SAFER for ATS systems</strong> - but with important exceptions.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('quickAnswerDesc') }} />
         </Typography>
         <Typography variant="body2">
-          • <strong>Use Word (.docx)</strong> when the job posting doesn't specify a format
+          <span dangerouslySetInnerHTML={{ __html: t.raw('quickAnswerBullet1') }} />
           <br />
-          • <strong>Use PDF</strong> when explicitly requested or when preserving exact formatting is critical
+          <span dangerouslySetInnerHTML={{ __html: t.raw('quickAnswerBullet2') }} />
         </Typography>
       </Paper>
 
       <Typography variant="h5" component="h3" gutterBottom sx={{ mt: 3, fontWeight: 600 }}>
-        Why Word (.docx) Works Better for ATS
+        {t('whyWordTitle')}
       </Typography>
 
       <Typography variant="body1" component="div">
-        <strong>1. Text Extraction is Easier</strong>
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whyWordPoint1Title') }} />
         <br />
-        Word documents store text as plain, structured data. ATS systems can easily parse:
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whyWordPoint1Desc') }} />
         <ul>
-          <li>Headings and sections</li>
-          <li>Bullet points and lists</li>
-          <li>Tables and formatting</li>
+          <li>{t('whyWordPoint1Item1')}</li>
+          <li>{t('whyWordPoint1Item2')}</li>
+          <li>{t('whyWordPoint1Item3')}</li>
         </ul>
       </Typography>
 
       <Typography variant="body1" component="div" paragraph>
-        <strong>2. Universal Compatibility</strong>
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whyWordPoint2Title') }} />
         <br />
-        Almost all ATS systems (Workday, Taleo, Greenhouse, Lever) can read .docx files without issues.
+        {t('whyWordPoint2Desc')}
       </Typography>
 
       <Typography variant="h5" component="h3" gutterBottom sx={{ mt: 3, fontWeight: 600 }}>
-        When PDFs Fail (And How to Fix It)
+        {t('whenPdfFailTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        PDFs can be problematic because:
+        {t('whenPdfFailDesc')}
       </Typography>
 
       <Alert severity="warning" sx={{ mb: 2 }}>
         <Typography variant="body2">
-          <strong>Image-based PDFs</strong> (scanned documents) are completely unreadable by ATS. Your resume will be auto-rejected.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('pdfWarning') }} />
         </Typography>
       </Alert>
 
       <Typography variant="body1" component="div" paragraph>
-        <strong>Common PDF Problems:</strong>
+        <span dangerouslySetInnerHTML={{ __html: t.raw('pdfProblemsTitle') }} />
         <ul>
-          <li>Text in headers/footers may be ignored</li>
-          <li>Multi-column layouts confuse parsers</li>
-          <li>Tables can scramble your information</li>
-          <li>Custom fonts may not render correctly</li>
+          <li>{t('pdfProblem1')}</li>
+          <li>{t('pdfProblem2')}</li>
+          <li>{t('pdfProblem3')}</li>
+          <li>{t('pdfProblem4')}</li>
         </ul>
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        Need to Convert? Do It Here (Free, No Sign-up)
+        {t('convertTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        If you have your resume in the wrong format, <strong>don't panic</strong>. Convert it right here in seconds:
+        <span dangerouslySetInnerHTML={{ __html: t.raw('convertDesc') }} />
       </Typography>
 
       {/* EMBEDDED CONVERTER - This is the KEY to SEO strategy */}
@@ -97,104 +100,104 @@ function ATSResumeBlog() {
 
       <Alert severity="info" sx={{ my: 3 }}>
         <Typography variant="body2">
-          <strong>Pro Tip:</strong> After converting, always open the file and check that your formatting stayed intact. Look for missing bullet points, scrambled dates, or misaligned sections.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('proTip') }} />
         </Typography>
       </Alert>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        The Safe Strategy: Submit Both (When Possible)
+        {t('safeStrategyTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        If the application system allows multiple file uploads:
+        {t('safeStrategyDesc')}
       </Typography>
 
       <Typography variant="body1" component="div" paragraph>
-        <strong>1. Upload .docx as your primary resume</strong> (for ATS parsing)
+        <span dangerouslySetInnerHTML={{ __html: t.raw('safeStrategy1') }} />
         <br />
-        <strong>2. Upload PDF as a "backup" or in the cover letter section</strong> (for human reviewers who want clean formatting)
+        <span dangerouslySetInnerHTML={{ __html: t.raw('safeStrategy2') }} />
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        Final Checklist: ATS-Proof Your Resume
+        {t('checklistTitle')}
       </Typography>
 
       <Paper sx={{ p: 3, bgcolor: "background.default" }}>
         <Typography variant="body1" component="div">
-          ✅ <strong>File Format:</strong> Use .docx unless PDF is explicitly requested
+          <span dangerouslySetInnerHTML={{ __html: t.raw('checklist1') }} />
           <br />
-          ✅ <strong>File Name:</strong> Use "FirstName_LastName_Resume.docx" (not "resume_final_v3.docx")
+          <span dangerouslySetInnerHTML={{ __html: t.raw('checklist2') }} />
           <br />
-          ✅ <strong>Fonts:</strong> Stick to standard fonts (Arial, Calibri, Times New Roman)
+          <span dangerouslySetInnerHTML={{ __html: t.raw('checklist3') }} />
           <br />
-          ✅ <strong>Layout:</strong> Single column, clear headings, no text boxes or images
+          <span dangerouslySetInnerHTML={{ __html: t.raw('checklist4') }} />
           <br />
-          ✅ <strong>Keywords:</strong> Match job description terminology exactly
+          <span dangerouslySetInnerHTML={{ __html: t.raw('checklist5') }} />
           <br />
-          ✅ <strong>Test It:</strong> Open your file in Google Docs to see if text is selectable
+          <span dangerouslySetInnerHTML={{ __html: t.raw('checklist6') }} />
         </Typography>
       </Paper>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        What If They Specifically Ask for PDF?
+        {t('specificPdfTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Some companies (especially in creative fields like design, marketing, or tech startups) <strong>prefer PDFs</strong> because:
+        <span dangerouslySetInnerHTML={{ __html: t.raw('specificPdfDesc') }} />
       </Typography>
 
       <Typography variant="body1" component="div" paragraph>
-        • They want to see your exact formatting and design choices
+        {t('specificPdfReason1')}
         <br />
-        • They're using modern ATS systems that handle PDFs well
+        {t('specificPdfReason2')}
         <br />
-        • They value brand presentation and visual consistency
+        {t('specificPdfReason3')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        <strong>In this case:</strong> Always follow their instructions. If they ask for PDF, give them PDF. Use the converter above to switch from Word to PDF if needed.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('specificPdfInstructions') }} />
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        Common Questions
+        {t('faqTitle')}
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        Q: Can I use Google Docs format?
+        {t('faq1Q')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> No. Always export to .docx or PDF before submitting. Many ATS systems cannot open Google Docs links or .gdoc files.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('faq1A') }} />
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        Q: What about Pages files (.pages) from Mac?
+        {t('faq2Q')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> Never submit .pages files. They're only readable on Mac/iOS. Export to .docx or PDF first.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('faq2A') }} />
       </Typography>
 
       <Typography variant="h6" component="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
-        Q: Should I password-protect my resume PDF?
+        {t('faq3Q')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> Absolutely not. ATS systems cannot open password-protected files. Your application will be auto-rejected.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('faq3A') }} />
       </Typography>
 
       <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 600 }}>
-        The Bottom Line
+        {t('bottomLineTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        <strong>Default to Word (.docx) for maximum ATS compatibility</strong>, but always read the job posting instructions carefully. When in doubt, you can't go wrong with a clean, simple .docx file with standard fonts and single-column layout.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('bottomLine1') }} />
       </Typography>
 
       <Typography variant="body1" paragraph>
-        And remember: the converter above is always here, completely free, no email required. Convert as many times as you need until you get it right.
+        {t('bottomLine2')}
       </Typography>
 
       <Alert severity="success" sx={{ mt: 3 }}>
         <Typography variant="body2">
-          <strong>Good luck with your job search!</strong> The right format is just one piece of the puzzle, but it's an important one that many candidates overlook.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('goodLuck') }} />
         </Typography>
       </Alert>
     </BlogLayout>

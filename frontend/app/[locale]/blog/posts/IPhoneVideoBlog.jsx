@@ -16,24 +16,21 @@ import {
 import { Warning, CheckCircle, Error } from "@mui/icons-material";
 import BlogLayout from "@/components/BlogLayout";
 import Converter from "@/features/converter/converter";
+import { useTranslations } from "next-intl";
 
 function IPhoneVideoBlog() {
+  const t = useTranslations('blog.iPhoneVideo');
+
   return (
-    <BlogLayout title="Why your iPhone video (HEVC/MOV) won't play on Windows & How to fix it">
+    <BlogLayout title={t('title')}>
       <Alert severity="error" icon={<Error />} sx={{ mb: 3 }}>
         <Typography variant="body1">
-          <strong>Frustrated?</strong> You just shot a perfect video on your
-          iPhone, transferred it to your Windows PC, and...{" "}
-          <strong>it won't play</strong>. The file is there, but Windows Media
-          Player shows a black screen or error message.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('alertTitle') }} />
         </Typography>
       </Alert>
 
       <Typography variant="body1" paragraph>
-        You're not alone. This is{" "}
-        <strong>one of the most common tech frustrations</strong> for iPhone
-        users, and it's not your fault. Here's what's happening and how to fix
-        it permanently.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('intro') }} />
       </Typography>
 
       <Typography
@@ -42,22 +39,19 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 4, fontWeight: 600 }}
       >
-        The Problem: HEVC (aka H.265) Codec
+        {t('problemTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Since iOS 11 (2017), iPhones record videos using{" "}
-        <strong>HEVC (High Efficiency Video Coding)</strong>, also called H.265.
-        This codec:
+        <span dangerouslySetInnerHTML={{ __html: t.raw('problemDesc') }} />
       </Typography>
 
       <Typography variant="body1" component="div" paragraph>
-        ✅ <strong>Saves 50% storage space</strong> compared to older formats
-        <br />✅ <strong>Keeps the same video quality</strong>
-        <br />❌ <strong>Isn't supported by most Windows apps</strong>
-        <br />❌ <strong>Doesn't work on older Android phones</strong>
-        <br />❌ <strong>Crashes many video editing programs</strong> (Adobe
-        Premiere, DaVinci Resolve, etc.)
+        <span dangerouslySetInnerHTML={{ __html: t.raw('problemPoint1') }} />
+        <br /><span dangerouslySetInnerHTML={{ __html: t.raw('problemPoint2') }} />
+        <br /><span dangerouslySetInnerHTML={{ __html: t.raw('problemPoint3') }} />
+        <br /><span dangerouslySetInnerHTML={{ __html: t.raw('problemPoint4') }} />
+        <br /><span dangerouslySetInnerHTML={{ __html: t.raw('problemPoint5') }} />
       </Typography>
 
       <Paper sx={{ p: 3, bgcolor: "warning.lighter", mb: 3 }}>
@@ -65,10 +59,7 @@ function IPhoneVideoBlog() {
           <Warning color="warning" />
           <Box>
             <Typography variant="body1">
-              <strong>Why Apple does this:</strong> HEVC is technically superior
-              - smaller files, better quality. But it's patent-encumbered, so
-              Microsoft and Google don't include native support in
-              Windows/Android to avoid licensing fees.
+              <span dangerouslySetInnerHTML={{ __html: t.raw('whyAppleTitle') }} />
             </Typography>
           </Box>
         </Stack>
@@ -80,34 +71,29 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 4, fontWeight: 600 }}
       >
-        Symptoms: How to Know If This Is Your Problem
+        {t('symptomsTitle')}
       </Typography>
 
       <Typography variant="body1" component="div">
-        You have the HEVC compatibility issue if:
+        {t('symptomsDesc')}
         <ul>
           <li>
-            <strong>Video file extension is .MOV or .m4v</strong> (iPhone's
-            default format)
+            <span dangerouslySetInnerHTML={{ __html: t.raw('symptom1') }} />
           </li>
           <li>
-            <strong>
-              Video plays fine on iPhone/Mac but not on Windows PC
-            </strong>
+            <span dangerouslySetInnerHTML={{ __html: t.raw('symptom2') }} />
           </li>
           <li>
-            Windows Media Player shows <strong>"Can't play this file"</strong>{" "}
-            or codec error
+            <span dangerouslySetInnerHTML={{ __html: t.raw('symptom3') }} />
           </li>
           <li>
-            VLC plays it but <strong>stutters/lags heavily</strong>
+            <span dangerouslySetInnerHTML={{ __html: t.raw('symptom4') }} />
           </li>
           <li>
-            Your editing software says <strong>"Unsupported codec"</strong> or
-            crashes on import
+            <span dangerouslySetInnerHTML={{ __html: t.raw('symptom5') }} />
           </li>
           <li>
-            When you send the video to Android friends, they can't watch it
+            {t('symptom6')}
           </li>
         </ul>
       </Typography>
@@ -118,37 +104,34 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 4, fontWeight: 600 }}
       >
-        The "Official" Fix (Costs Money, Kinda Sucks)
+        {t('officialFixTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Microsoft <em>technically</em> offers HEVC codec support, but they
-        charge for it:
+        <span dangerouslySetInnerHTML={{ __html: t.raw('officialFixDesc') }} />
       </Typography>
 
       <Typography variant="body1" component="div" paragraph>
-        1. Go to Microsoft Store
+        {t('officialFixStep1')}
         <br />
-        2. Buy "<strong>HEVC Video Extensions</strong>" for{" "}
-        <strong>$0.99</strong>
+        <span dangerouslySetInnerHTML={{ __html: t.raw('officialFixStep2') }} />
         <br />
-        3. Install it
+        {t('officialFixStep3')}
         <br />
-        4. Hope it works (it often doesn't for older Windows versions)
+        {t('officialFixStep4')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        <strong>Why this sucks:</strong>
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whySucksTitle') }} />
       </Typography>
 
       <Typography variant="body1" component="div" paragraph>
-        • It only fixes <em>your</em> computer. Doesn't help if you need to send
-        videos to others.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whySucksPoint1') }} />
         <br />
-        • Doesn't work on Windows 7 or 8.
+        {t('whySucksPoint2')}
         <br />
-        • You still can't edit the video in many programs.
-        <br />• It's a band-aid, not a real solution.
+        {t('whySucksPoint3')}
+        <br />{t('whySucksPoint4')}
       </Typography>
 
       <Typography
@@ -157,13 +140,11 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 4, fontWeight: 600 }}
       >
-        The Real Fix: Convert MOV to MP4 (H.264)
+        {t('realFixTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        The permanent solution is to{" "}
-        <strong>convert your iPhone videos from HEVC to H.264</strong> (standard
-        MP4). This format:
+        <span dangerouslySetInnerHTML={{ __html: t.raw('realFixDesc') }} />
       </Typography>
 
       <Paper sx={{ p: 3, bgcolor: "success.lighter", mb: 3 }}>
@@ -171,29 +152,25 @@ function IPhoneVideoBlog() {
           <Stack direction="row" spacing={1} alignItems="center">
             <CheckCircle color="success" sx={{ fontSize: 20 }} />
             <Typography variant="body1">
-              <strong>Works on every device:</strong> Windows, Mac, Linux,
-              Android, smart TVs, game consoles
+              <span dangerouslySetInnerHTML={{ __html: t.raw('benefit1') }} />
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1} alignItems="center">
             <CheckCircle color="success" sx={{ fontSize: 20 }} />
             <Typography variant="body1">
-              <strong>Supported by all editing software:</strong> Premiere,
-              Final Cut, DaVinci, iMovie, etc.
+              <span dangerouslySetInnerHTML={{ __html: t.raw('benefit2') }} />
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1} alignItems="center">
             <CheckCircle color="success" sx={{ fontSize: 20 }} />
             <Typography variant="body1">
-              <strong>Easy to share:</strong> Works on email, Discord, WhatsApp,
-              social media
+              <span dangerouslySetInnerHTML={{ __html: t.raw('benefit3') }} />
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1} alignItems="center">
             <CheckCircle color="success" sx={{ fontSize: 20 }} />
             <Typography variant="body1">
-              <strong>No quality loss:</strong> Modern converters maintain the
-              same visual quality
+              <span dangerouslySetInnerHTML={{ __html: t.raw('benefit4') }} />
             </Typography>
           </Stack>
         </Stack>
@@ -205,12 +182,11 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 4, fontWeight: 600 }}
       >
-        Convert Your iPhone Video Here (Free, No Install)
+        {t('convertHereTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Drag your .MOV file below and select <strong>MP4</strong> as the output
-        format. Conversion takes about 1-2 minutes:
+        <span dangerouslySetInnerHTML={{ __html: t.raw('convertHereDesc') }} />
       </Typography>
 
       {/* EMBEDDED CONVERTER - THE MONEY SHOT */}
@@ -220,10 +196,7 @@ function IPhoneVideoBlog() {
 
       <Alert severity="info" sx={{ my: 3 }}>
         <Typography variant="body2">
-          <strong>Technical Note:</strong> This converts HEVC (H.265) to H.264
-          codec while keeping the MP4 container format. The file size will be
-          slightly larger (about 1.5-2x) but the quality stays identical to
-          human eyes.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('technicalNote') }} />
         </Typography>
       </Alert>
 
@@ -233,40 +206,34 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 4, fontWeight: 600 }}
       >
-        Prevent This Problem: Change iPhone Camera Settings
+        {t('preventTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        If you frequently transfer iPhone videos to Windows/Android, you can
-        stop this issue from happening in the future:
+        {t('preventDesc')}
       </Typography>
 
       <Paper sx={{ p: 3, bgcolor: "background.default" }}>
         <Typography variant="body1" component="div">
-          <strong>On iPhone (iOS 11 or later):</strong>
+          <span dangerouslySetInnerHTML={{ __html: t.raw('preventStepsTitle') }} />
           <br />
-          1. Open <strong>Settings</strong>
+          <span dangerouslySetInnerHTML={{ __html: t.raw('preventStep1') }} />
           <br />
-          2. Scroll down and tap <strong>Camera</strong>
+          <span dangerouslySetInnerHTML={{ __html: t.raw('preventStep2') }} />
           <br />
-          3. Tap <strong>Formats</strong>
+          <span dangerouslySetInnerHTML={{ __html: t.raw('preventStep3') }} />
           <br />
-          4. Select <strong>"Most Compatible"</strong> instead of "High
-          Efficiency"
+          <span dangerouslySetInnerHTML={{ __html: t.raw('preventStep4') }} />
         </Typography>
       </Paper>
 
       <Typography variant="body1" paragraph sx={{ mt: 2 }}>
-        <strong>What this does:</strong> Your iPhone will now record videos in
-        H.264 (standard MP4) instead of HEVC. Videos will be larger but will
-        work everywhere without conversion.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('whatThisDoes') }} />
       </Typography>
 
       <Alert severity="warning" sx={{ mt: 2 }}>
         <Typography variant="body2">
-          <strong>Trade-off:</strong> Video files will be about 2x larger. If
-          you have limited iPhone storage (64GB or less), you might want to keep
-          using HEVC and just convert videos when needed.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('tradeoffWarning') }} />
         </Typography>
       </Alert>
 
@@ -276,7 +243,7 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 4, fontWeight: 600 }}
       >
-        Compatibility Comparison
+        {t('comparisonTitle')}
       </Typography>
 
       <TableContainer component={Paper} sx={{ mb: 3 }}>
@@ -284,78 +251,78 @@ function IPhoneVideoBlog() {
           <TableHead>
             <TableRow sx={{ bgcolor: "primary.main" }}>
               <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                Platform/Software
+                {t('tableHeaderPlatform')}
               </TableCell>
               <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                HEVC/MOV
+                {t('tableHeaderHEVC')}
               </TableCell>
               <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                H.264/MP4
+                {t('tableHeaderH264')}
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell>Windows 10/11 (default)</TableCell>
+              <TableCell>{t('tableWindows')}</TableCell>
               <TableCell sx={{ color: "error.main", fontWeight: "bold" }}>
-                ❌ No
+                {t('tableNo')}
               </TableCell>
               <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
+                {t('tableYes')}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Mac/iPhone/iPad</TableCell>
+              <TableCell>{t('tableMac')}</TableCell>
               <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
+                {t('tableYes')}
               </TableCell>
               <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
+                {t('tableYes')}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Android (varies by phone)</TableCell>
+              <TableCell>{t('tableAndroid')}</TableCell>
               <TableCell sx={{ color: "warning.main", fontWeight: "bold" }}>
-                ⚠️ Maybe
+                {t('tableMaybe')}
               </TableCell>
               <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
+                {t('tableYes')}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Adobe Premiere Pro</TableCell>
+              <TableCell>{t('tablePremiere')}</TableCell>
               <TableCell sx={{ color: "warning.main", fontWeight: "bold" }}>
-                ⚠️ Slow
+                {t('tableSlow')}
               </TableCell>
               <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
+                {t('tableYes')}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>DaVinci Resolve (Free)</TableCell>
+              <TableCell>{t('tableDavinci')}</TableCell>
               <TableCell sx={{ color: "error.main", fontWeight: "bold" }}>
-                ❌ No
+                {t('tableNo')}
               </TableCell>
               <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>VLC Media Player</TableCell>
-              <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
-              </TableCell>
-              <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
+                {t('tableYes')}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>YouTube/Instagram/TikTok</TableCell>
+              <TableCell>{t('tableVLC')}</TableCell>
               <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
+                {t('tableYes')}
               </TableCell>
               <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
-                ✅ Yes
+                {t('tableYes')}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>{t('tableSocial')}</TableCell>
+              <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
+                {t('tableYes')}
+              </TableCell>
+              <TableCell sx={{ color: "success.main", fontWeight: "bold" }}>
+                {t('tableYes')}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -368,7 +335,7 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 4, fontWeight: 600 }}
       >
-        Common Questions
+        {t('commonQTitle')}
       </Typography>
 
       <Typography
@@ -377,12 +344,10 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 2, fontWeight: 600 }}
       >
-        Q: Will I lose quality when converting from MOV to MP4?
+        {t('commonQ1')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> No visible quality loss. Modern converters (like
-        this one, which uses FFmpeg) transcode intelligently to preserve
-        quality. The file will be larger, but it will look identical.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('commonA1') }} />
       </Typography>
 
       <Typography
@@ -391,12 +356,10 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 2, fontWeight: 600 }}
       >
-        Q: Why can't I just rename .MOV to .MP4?
+        {t('commonQ2')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> Because the problem isn't the filename - it's the
-        codec inside. Renaming changes the container but doesn't convert the
-        HEVC video codec to H.264. You need actual conversion.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('commonA2') }} />
       </Typography>
 
       <Typography
@@ -405,12 +368,10 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 2, fontWeight: 600 }}
       >
-        Q: Can I convert videos shot in 4K or 60fps?
+        {t('commonQ3')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> Yes. All resolutions (1080p, 4K, etc.) and frame
-        rates are supported. The converter preserves your original resolution
-        and frame rate.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('commonA3') }} />
       </Typography>
 
       <Typography
@@ -419,12 +380,10 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 2, fontWeight: 600 }}
       >
-        Q: Is there a faster way if I have lots of videos?
+        {t('commonQ4')}
       </Typography>
       <Typography variant="body1" paragraph>
-        <strong>A:</strong> For batch conversion, you can use this tool multiple
-        times, or install a desktop app like HandBrake (free, open-source) which
-        can convert multiple files at once.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('commonA4') }} />
       </Typography>
 
       <Typography
@@ -433,32 +392,24 @@ function IPhoneVideoBlog() {
         gutterBottom
         sx={{ mt: 4, fontWeight: 600 }}
       >
-        The Bottom Line
+        {t('bottomLineTitle')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Apple prioritizes storage efficiency over compatibility. It's a
-        reasonable choice for the Apple ecosystem, but it creates headaches when
-        you step outside that ecosystem.
+        {t('bottomLine1')}
       </Typography>
 
       <Typography variant="body1" paragraph>
-        <strong>The good news:</strong> Converting your videos takes less than 2
-        minutes and solves the problem permanently. No codecs to buy, no
-        complicated software to learn.
+        <span dangerouslySetInnerHTML={{ __html: t.raw('bottomLine2') }} />
       </Typography>
 
       <Typography variant="body1" paragraph>
-        Just convert your iPhone videos to standard MP4, and they'll work
-        everywhere - Windows, Android, editing software, social media, you name
-        it.
+        {t('bottomLine3')}
       </Typography>
 
       <Alert severity="success" sx={{ mt: 3 }}>
         <Typography variant="body2">
-          <strong>Problem solved!</strong> Bookmark this page for next time your
-          iPhone video won't play on Windows. Share it with friends who have the
-          same issue.
+          <span dangerouslySetInnerHTML={{ __html: t.raw('problemSolved') }} />
         </Typography>
       </Alert>
     </BlogLayout>
