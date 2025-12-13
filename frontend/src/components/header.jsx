@@ -29,17 +29,19 @@ function Header() {
           justifyContent: "space-between",
         }}
       >
-        <Box
-          component="img"
-          src="/logo.svg"
-          alt="OpenConvert"
-          sx={{
-            height: {
-              xs: "50px",
-              md: "80px",
-            },
-          }}
-        />
+        <MuiLink component={Link} to="/" sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            component="img"
+            src="/logo.svg"
+            alt="OpenConvert"
+            sx={{
+              height: {
+                xs: "50px",
+                md: "80px",
+              },
+            }}
+          />
+        </MuiLink>
 
         <Stack direction="row" spacing={2} alignItems="center">
           <MuiLink component={Link} to="/blog" sx={{ color: 'white', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
