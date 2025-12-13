@@ -1,15 +1,12 @@
+'use client';
+
 import { Typography, Box, Paper, Alert } from "@mui/material";
-import BlogLayout from "../BlogLayout";
-import Converter from "../../../features/converter/converter";
+import BlogLayout from "@/components/BlogLayout";
+import Converter from "@/features/converter/converter";
 
 function ATSResumeBlog() {
   return (
-    <BlogLayout
-      title="Submit resume in PDF or Word? Why format matters for ATS"
-      description="Learn which resume format (PDF vs Word) passes ATS systems better. Avoid common resume rejection mistakes. Free PDF to Word converter included - no sign-up required."
-      keywords="resume format, PDF vs Word resume, ATS resume, applicant tracking system, resume submission, PDF to Word converter, Word to PDF, job application, resume tips, ATS friendly resume"
-      canonicalUrl="/blog/resume-pdf-word-ats"
-    >
+    <BlogLayout title="Submit resume in PDF or Word? Why format matters for ATS">
       <Typography variant="body1" paragraph>
         You've spent hours perfecting your resume, but did you know that <strong>over 75% of resumes are rejected before a human ever sees them</strong>? The culprit? Applicant Tracking Systems (ATS) - and the wrong file format can be your downfall.
       </Typography>

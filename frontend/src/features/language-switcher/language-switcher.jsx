@@ -1,5 +1,8 @@
+'use client';
+
 import { Select, MenuItem, FormControl } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { useRouter, usePathname } from "@/i18n/routing";
+import { useLocale } from "next-intl";
 
 const languages = [
   { code: "en", label: "English" },
@@ -8,16 +11,25 @@ const languages = [
 ];
 
 function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const router = useRouter();
+  const pathname = usePathname();
+  const locale = useLocale();
 
   const handleChange = (event) => {
-    i18n.changeLanguage(event.target.value);
+    const newLocale = event.target.value;
+
+    // Don't do anything if selecting the same locale
+    if (newLocale === locale) {
+      return;
+    }
+
+    router.replace(pathname, { locale: newLocale });
   };
 
   return (
     <FormControl size="small" sx={{ minWidth: 120 }}>
       <Select
-        value={i18n.language}
+        value={locale}
         onChange={handleChange}
         sx={{
           color: "#FFD700",

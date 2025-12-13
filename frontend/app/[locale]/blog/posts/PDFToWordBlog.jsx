@@ -1,16 +1,13 @@
+'use client';
+
 import { Typography, Box, Paper, Alert, Chip, Stack } from "@mui/material";
 import { Lock, Email, CreditCard, Speed } from "@mui/icons-material";
-import BlogLayout from "../BlogLayout";
-import Converter from "../../../features/converter/converter";
+import BlogLayout from "@/components/BlogLayout";
+import Converter from "@/features/converter/converter";
 
 function PDFToWordBlog() {
   return (
-    <BlogLayout
-      title="Convert PDF to Word for Free: No Sign-up, No Email Required"
-      description="Convert PDF to Word (DOCX) instantly without sign-up, email, or credit card. 100% free, unlimited conversions, no file size limits. Edit your PDFs in Word now."
-      keywords="PDF to Word converter, free PDF converter, PDF to DOCX, convert PDF to Word free, no sign-up PDF converter, no email required, edit PDF in Word, PDF to Word online, unlimited PDF conversion"
-      canonicalUrl="/blog/convert-pdf-to-word-free"
-    >
+    <BlogLayout title="Convert PDF to Word for Free: No Sign-up, No Email Required">
       <Typography variant="body1" paragraph>
         Need to edit a PDF but stuck because it's locked? Want to convert PDF to Word but <strong>sick of sites asking for your email, credit card, or "free trial"</strong>? You're in the right place.
       </Typography>

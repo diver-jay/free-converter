@@ -1,34 +1,38 @@
-# Build stage
-FROM node:18-alpine AS build
+# Stage 1: Build the Next.js application
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
-# Copy source files
+# Copy the rest of the source code
 COPY . .
 
 # Build the application
+# The standalone output will be in .next/standalone
 RUN npm run build
 
-# Production stage
-FROM nginx:alpine
+# Stage 2: Create the production image from the standalone output
+FROM node:18-alpine AS runner
 
-# Copy built files to nginx
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-# Fix permissions so nginx can read files
-RUN chmod -R o+r /usr/share/nginx/html
+# Copy the standalone build from the builder stage
+COPY --from=builder /app/.next/standalone ./
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy the static and public assets
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
 
-# Expose port
-EXPOSE 80
+# The Next.js server will run on port 3000 by default
+EXPOSE 3000
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Set the environment variable for the port
+ENV PORT 3000
+
+# Start the Next.js server
+CMD ["node", "server.js"]

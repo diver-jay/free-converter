@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "开放转换 - 免费文件转换器",
+    "description": "免费在线视频和文档转换器。转换MP4、WebM、MOV、AVI、MKV、FLV、PDF、Word。无需注册，100%免费。",
+    "keywords": "文件转换, 视频转换, 文档转换, 免费转换器, mp4转换, webm转换, mov转换, avi转换, mkv转换, flv转换, pdf转换, word转换, pdf转word, word转pdf, webm转mp4, mp4转webm, FFmpeg"
+  },
+  "header": {
+    "title": "文件转换器",
+    "subtitle": "轻松在线免费转换视频和文档"
+  },
+  "footer": {
+    "info": "100% 免费 • 无需注册 • 文件1小时后自动删除",
+    "poweredBy": "基于 FFmpeg"
+  },
+  "upload": {
+    "chooseFile": "选择文件",
+    "dragDrop": "点击浏览或拖放文件（视频或文档）",
+    "selected": "已选择",
+    "size": "大小",
+    "uploading": "上传中... {{progress}}%",
+    "converting": "转换中...",
+    "convertButton": "转换",
+    "conversionComplete": "转换完成！",
+    "downloadButton": "下载",
+    "convertAnother": "转换其他文件"
+  },
+  "errors": {
+    "selectWebm": "请选择有效的文件（视频或文档）",
+    "selectFile": "请先选择文件",
+    "uploadFailed": "上传失败，请重试。"
+  },
+  "howToUse": {
+    "title": "使用方法",
+    "step1Title": "1. 选择文件",
+    "step1Desc": "点击上传区域或拖放以选择文件（视频：WebM、MP4、MOV、AVI、MKV、FLV / 文档：PDF、Word）",
+    "step2Title": "2. 选择输出格式并转换",
+    "step2Desc": "对于视频文件，从下拉菜单中选择所需的输出格式，然后点击转换按钮",
+    "step3Title": "3. 下载",
+    "step3Desc": "转换完成后，点击下载按钮保存转换后的文件"
+  },
+  "faq": {
+    "title": "常见问题 (FAQ)",
+    "q1": "支持哪些文件格式？",
+    "a1": "我们支持视频格式包括 WebM、MP4、MOV、AVI、MKV 和 FLV，以及 PDF 和 Word（DOCX）之间的文档转换。您可以在所有支持的格式之间自由转换。",
+    "q2": "转换后的文件存储在哪里？",
+    "a2": "转换后的文件临时存储在服务器上，1小时后自动删除。下载后立即保存到浏览器的下载文件夹中。",
+    "q3": "文件大小有限制吗？",
+    "a3": "目前没有文件大小限制，但较大的文件可能需要更长的转换时间。为确保稳定转换，建议使用 100MB 以下的文件。",
+    "q4": "安全吗？",
+    "a4": "是的，所有文件都经过安全处理，1小时后自动删除。文件仅用于转换目的，不与第三方共享。",
+    "q5": "真的免费吗？",
+    "a5": "是的，完全免费。无需注册，没有任何隐藏费用。随时可以使用。"
+  },
+  "values": {
+    "free": {
+      "title": "完全免费",
+      "description": "无需注册或安装软件。在任何设备上免费无限制转换文件，没有隐藏费用。"
+    },
+    "formats": {
+      "title": "多种格式支持",
+      "description": "支持MP4、WebM、MOV、AVI、MKV、FLV、PDF、Word等多种文件格式之间的自由转换。"
+    },
+    "security": {
+      "title": "安全转换",
+      "description": "文件通过256位SSL加密传输，1小时后自动删除，保障文件安全。"
+    }
+  }
+}

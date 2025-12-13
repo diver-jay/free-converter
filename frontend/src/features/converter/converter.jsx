@@ -1,6 +1,8 @@
+'use client';
+
 import { useState } from "react";
 import axios from "axios";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import {
   Box,
   Card,
@@ -27,7 +29,7 @@ import { spacing } from "../../theme";
 import { isFileType } from "../../utils/fileTypeDetection";
 
 function Converter() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -38,7 +40,7 @@ function Converter() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const API_URL = import.meta.env.VITE_API_URL || "";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
   const allowedVideoExtensions = [
     ".webm",
@@ -311,63 +313,67 @@ function Converter() {
                 horizontal: "right",
               }}
             >
-              {file && isDocumentFile(file) ? (
+              {file && isDocumentFile(file) ? [
                 // Document: PDF <-> DOCX (2 options)
-                <>
-                  <MenuItem
-                    onClick={() => handleFormatSelect("pdf")}
-                    selected={outputFormat === "pdf"}
-                  >
-                    PDF
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleFormatSelect("docx")}
-                    selected={outputFormat === "docx"}
-                  >
-                    DOCX (Word)
-                  </MenuItem>
-                </>
-              ) : (
+                <MenuItem
+                  key="pdf"
+                  onClick={() => handleFormatSelect("pdf")}
+                  selected={outputFormat === "pdf"}
+                >
+                  PDF
+                </MenuItem>,
+                <MenuItem
+                  key="docx"
+                  onClick={() => handleFormatSelect("docx")}
+                  selected={outputFormat === "docx"}
+                >
+                  DOCX (Word)
+                </MenuItem>
+              ] : [
                 // Video: 6 format options
-                <>
-                  <MenuItem
-                    onClick={() => handleFormatSelect("mp4")}
-                    selected={outputFormat === "mp4"}
-                  >
-                    MP4
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleFormatSelect("webm")}
-                    selected={outputFormat === "webm"}
-                  >
-                    WebM
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleFormatSelect("mov")}
-                    selected={outputFormat === "mov"}
-                  >
-                    MOV
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleFormatSelect("avi")}
-                    selected={outputFormat === "avi"}
-                  >
-                    AVI
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleFormatSelect("mkv")}
-                    selected={outputFormat === "mkv"}
-                  >
-                    MKV
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleFormatSelect("flv")}
-                    selected={outputFormat === "flv"}
-                  >
-                    FLV
-                  </MenuItem>
-                </>
-              )}
+                <MenuItem
+                  key="mp4"
+                  onClick={() => handleFormatSelect("mp4")}
+                  selected={outputFormat === "mp4"}
+                >
+                  MP4
+                </MenuItem>,
+                <MenuItem
+                  key="webm"
+                  onClick={() => handleFormatSelect("webm")}
+                  selected={outputFormat === "webm"}
+                >
+                  WebM
+                </MenuItem>,
+                <MenuItem
+                  key="mov"
+                  onClick={() => handleFormatSelect("mov")}
+                  selected={outputFormat === "mov"}
+                >
+                  MOV
+                </MenuItem>,
+                <MenuItem
+                  key="avi"
+                  onClick={() => handleFormatSelect("avi")}
+                  selected={outputFormat === "avi"}
+                >
+                  AVI
+                </MenuItem>,
+                <MenuItem
+                  key="mkv"
+                  onClick={() => handleFormatSelect("mkv")}
+                  selected={outputFormat === "mkv"}
+                >
+                  MKV
+                </MenuItem>,
+                <MenuItem
+                  key="flv"
+                  onClick={() => handleFormatSelect("flv")}
+                  selected={outputFormat === "flv"}
+                >
+                  FLV
+                </MenuItem>
+              ]}
             </Menu>
           </Stack>
         ) : (

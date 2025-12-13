@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "Open Convert - Free File Converter",
+    "description": "Free online video and document converter. Convert MP4, WebM, MOV, AVI, MKV, FLV, PDF, Word. No sign-up required, 100% free.",
+    "keywords": "file converter, video converter, document converter, free converter, mp4 converter, webm converter, mov converter, avi converter, mkv converter, flv converter, pdf converter, word converter, pdf to word, word to pdf, webm to mp4, mp4 to webm, FFmpeg"
+  },
+  "header": {
+    "title": "File Converter",
+    "subtitle": "Convert videos and documents online with ease, for free"
+  },
+  "footer": {
+    "info": "Open convert",
+    "poweredBy": "100% Free convert"
+  },
+  "upload": {
+    "chooseFile": "Choose file",
+    "dragDrop": "Click to browse or drag and drop (video or document)",
+    "selected": "Selected",
+    "size": "Size",
+    "uploading": "Uploading... {{progress}}%",
+    "converting": "Converting...",
+    "convertButton": "Convert",
+    "conversionComplete": "Conversion Complete!",
+    "downloadButton": "Download",
+    "convertAnother": "Convert Another"
+  },
+  "errors": {
+    "selectWebm": "Please select a valid file (video or document)",
+    "selectFile": "Please select a file first",
+    "uploadFailed": "Upload failed. Please try again."
+  },
+  "howToUse": {
+    "title": "How to Use",
+    "step1Title": "1. Select File",
+    "step1Desc": "Click the upload area or drag and drop to select a file (Video: WebM, MP4, MOV, AVI, MKV, FLV / Document: PDF, Word)",
+    "step2Title": "2. Choose Output Format & Convert",
+    "step2Desc": "For video files, select your desired output format from the dropdown and click the convert button",
+    "step3Title": "3. Download",
+    "step3Desc": "Once conversion is complete, click the download button to save your converted file"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions (FAQ)",
+    "q1": "What file formats are supported?",
+    "a1": "We support video formats including WebM, MP4, MOV, AVI, MKV, and FLV, as well as document conversion between PDF and Word (DOCX). You can freely convert between all supported formats.",
+    "q2": "Where are converted files stored?",
+    "a2": "Converted files are temporarily stored on the server and automatically deleted after 1 hour. After downloading, they are immediately saved to your browser's download folder.",
+    "q3": "Is there a file size limit?",
+    "a3": "Currently, there is no file size limit, but larger files may take longer to convert. For stable conversion, we recommend files under 100MB.",
+    "q4": "Is it safe?",
+    "a4": "Yes, all files are securely processed and automatically deleted after 1 hour. Files are used only for conversion purposes and are not shared with third parties.",
+    "q5": "Is it really free?",
+    "a5": "Yes, it's 100% free. No sign-up required, and there are no hidden costs. Feel free to use it anytime."
+  },
+  "values": {
+    "free": {
+      "title": "No sign-up, Convert free",
+      "description": "No sign-up or installation required. Convert unlimited files for free on any device with no hidden costs."
+    },
+    "formats": {
+      "title": "Multi-Format Support",
+      "description": "Convert freely between various file formats including MP4, WebM, MOV, AVI, MKV, FLV, PDF, and Word."
+    },
+    "security": {
+      "title": "Secure Conversion",
+      "description": "Files are transferred via 256-bit SSL encryption and automatically deleted after 1 hour to ensure your privacy."
+    }
+  }
+}

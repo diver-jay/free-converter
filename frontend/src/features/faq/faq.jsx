@@ -1,5 +1,7 @@
+'use client';
+
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import {
   Box,
   Typography,
@@ -13,7 +15,7 @@ import { ExpandMore } from "@mui/icons-material";
 import { spacing } from "../../theme";
 
 function FAQ() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleFAQ = () => {

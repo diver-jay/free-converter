@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Typography,
   Box,
@@ -12,17 +14,12 @@ import {
   Stack,
 } from "@mui/material";
 import { Warning, CheckCircle, Error } from "@mui/icons-material";
-import BlogLayout from "../BlogLayout";
-import Converter from "../../../features/converter/converter";
+import BlogLayout from "@/components/BlogLayout";
+import Converter from "@/features/converter/converter";
 
 function IPhoneVideoBlog() {
   return (
-    <BlogLayout
-      title="Why your iPhone video (HEVC/MOV) won't play on Windows & How to fix it"
-      description="iPhone videos (HEVC/MOV) won't play on Windows PC, Android, or editing software? Learn why and fix it instantly. Convert MOV to MP4 free, no quality loss."
-      keywords="iPhone video won't play on Windows, HEVC not supported, MOV to MP4 converter, iPhone video compatibility, convert iPhone video, HEVC codec, iPhone video on PC, iPhone video to Android, fix iPhone video playback"
-      canonicalUrl="/blog/iphone-video-hevc-mov-windows"
-    >
+    <BlogLayout title="Why your iPhone video (HEVC/MOV) won't play on Windows & How to fix it">
       <Alert severity="error" icon={<Error />} sx={{ mb: 3 }}>
         <Typography variant="body1">
           <strong>Frustrated?</strong> You just shot a perfect video on your

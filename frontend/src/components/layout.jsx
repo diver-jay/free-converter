@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Container } from "@mui/material";
 import Header from "./header";
 import Footer from "./footer";

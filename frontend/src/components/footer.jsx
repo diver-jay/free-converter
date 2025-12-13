@@ -1,10 +1,12 @@
+'use client';
+
 import { Box, Typography } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import { spacing } from "../theme";
 import FAQ from "../features/faq/faq";
 
 function Footer() {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Box sx={{ width: "100%" }}>

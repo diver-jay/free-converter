@@ -1,8 +1,10 @@
+'use client';
+
 import { Typography, Box } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 
 function ValueCard({ icon, titleKey, descriptionKey }) {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Box

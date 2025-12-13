@@ -1,5 +1,7 @@
+'use client';
+
 import { Box, Stack, Link as MuiLink } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link } from "@/i18n/routing";
 import LanguageSwitcher from "../features/language-switcher/language-switcher";
 
 function Header() {
@@ -29,7 +31,7 @@ function Header() {
           justifyContent: "space-between",
         }}
       >
-        <MuiLink component={Link} to="/" sx={{ display: 'flex', alignItems: 'center' }}>
+        <MuiLink component={Link} href="/" sx={{ display: 'flex', alignItems: 'center' }}>
           <Box
             component="img"
             src="/logo.svg"
@@ -44,7 +46,7 @@ function Header() {
         </MuiLink>
 
         <Stack direction="row" spacing={2} alignItems="center">
-          <MuiLink component={Link} to="/blog" sx={{ color: 'white', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+          <MuiLink component={Link} href="/blog" sx={{ color: 'white', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
             Blog
           </MuiLink>
           <LanguageSwitcher />
