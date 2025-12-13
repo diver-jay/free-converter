@@ -40,11 +40,20 @@ function Converter() {
 
   const API_URL = import.meta.env.VITE_API_URL || "";
 
-  const allowedVideoExtensions = [".webm", ".mp4", ".mov", ".avi", ".mkv", ".flv"];
+  const allowedVideoExtensions = [
+    ".webm",
+    ".mp4",
+    ".mov",
+    ".avi",
+    ".mkv",
+    ".flv",
+  ];
   const allowedDocumentExtensions = [".pdf", ".docx"];
-  const allowedExtensions = [...allowedVideoExtensions, ...allowedDocumentExtensions];
+  const allowedExtensions = [
+    ...allowedVideoExtensions,
+    ...allowedDocumentExtensions,
+  ];
 
-  const isVideoFile = (file) => isFileType(file, allowedVideoExtensions);
   const isDocumentFile = (file) => isFileType(file, allowedDocumentExtensions);
 
   const handleFileChange = (e) => {
@@ -64,10 +73,10 @@ function Converter() {
 
       // Set default output format based on file type
       if (isDocumentFile(selectedFile)) {
-        const ext = selectedFile.name.split('.').pop().toLowerCase();
-        setOutputFormat(ext === 'pdf' ? 'docx' : 'pdf');
+        const ext = selectedFile.name.split(".").pop().toLowerCase();
+        setOutputFormat(ext === "pdf" ? "docx" : "pdf");
       } else {
-        setOutputFormat('mp4');
+        setOutputFormat("mp4");
       }
     }
   };
@@ -214,7 +223,9 @@ function Converter() {
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {t("upload.size")}:{" "}
-                        <strong>{(file.size / 1024 / 1024).toFixed(2)} MB</strong>
+                        <strong>
+                          {(file.size / 1024 / 1024).toFixed(2)} MB
+                        </strong>
                       </Typography>
                     </Box>
                   </Stack>

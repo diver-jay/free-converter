@@ -20,12 +20,18 @@ function LanguageSwitcher() {
         value={i18n.language}
         onChange={handleChange}
         sx={{
-          color: "black",
+          color: "#FFD700",
           "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "rgba(0, 0, 0, 0.23)",
+            borderColor: "#FFD700",
+            borderWidth: "3px",
           },
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "rgba(0, 0, 0, 0.5)",
+            borderColor: "#FFD700",
+            borderWidth: "3px",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#FFD700",
+            borderWidth: "3px",
           },
         }}
       >
