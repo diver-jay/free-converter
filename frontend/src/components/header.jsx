@@ -1,4 +1,5 @@
-import { Box } from "@mui/material";
+import { Box, Stack, Link as MuiLink } from "@mui/material";
+import { Link } from "react-router-dom";
 import LanguageSwitcher from "../features/language-switcher/language-switcher";
 
 function Header() {
@@ -40,7 +41,12 @@ function Header() {
           }}
         />
 
-        <LanguageSwitcher />
+        <Stack direction="row" spacing={2} alignItems="center">
+          <MuiLink component={Link} to="/blog" sx={{ color: 'white', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+            Blog
+          </MuiLink>
+          <LanguageSwitcher />
+        </Stack>
       </Box>
     </Box>
   );
