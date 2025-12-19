@@ -5,10 +5,15 @@ const path = require("path");
 const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
 const { v4: uuidv4 } = require("uuid");
+const os = require("os");
 require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Auto-detect CPU count, or use env variable for override
+const FFMPEG_THREADS = process.env.FFMPEG_THREADS || os.cpus().length;
+console.log(`FFmpeg will use ${FFMPEG_THREADS} threads (${os.cpus().length} CPUs available)`);
 
 // Middleware
 app.use(cors());
@@ -230,35 +235,93 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
 
   console.log(`Converting ${req.file.originalname} to ${outputFormat}...`);
 
+  // Track conversion time
+  let conversionStartTime;
+
   // Simple conversion - ffmpeg auto-selects codecs based on output format
   const converter = ffmpeg(inputPath).output(outputPath);
 
-  // Add format-specific options for optimal quality
+  // Add format-specific options optimized for speed
   if (outputFormat === "mp4") {
     converter
       .videoCodec("libx264")
       .audioCodec("aac")
+      .outputOptions([
+        '-preset ultrafast',  // Maximum encoding speed
+        '-crf 23',            // Constant quality (23 = good quality/speed balance)
+        `-threads ${FFMPEG_THREADS}`,  // Use all available CPUs
+        '-tune zerolatency',  // Minimize latency
+        '-r 30',              // Limit output to 30fps (fixes high fps screen recordings)
+        '-vsync cfr'          // Constant frame rate (fixes variable frame rate issues)
+      ])
       .videoFilters("scale=trunc(iw/2)*2:trunc(ih/2)*2");
   } else if (outputFormat === "webm") {
-    converter.videoCodec("libvpx").audioCodec("libvorbis");
+    converter
+      .videoCodec("libvpx")
+      .audioCodec("libvorbis")
+      .outputOptions([
+        '-cpu-used 5',        // libvpx speed setting (0-5, higher = faster)
+        '-deadline realtime', // Realtime encoding mode
+        `-threads ${FFMPEG_THREADS}`
+      ]);
   } else if (outputFormat === "mov") {
-    converter.videoCodec("libx264").audioCodec("aac");
+    converter
+      .videoCodec("libx264")
+      .audioCodec("aac")
+      .outputOptions([
+        '-preset ultrafast',
+        '-crf 23',
+        `-threads ${FFMPEG_THREADS}`,
+        '-tune zerolatency',
+        '-r 30',
+        '-vsync cfr'
+      ]);
   } else if (outputFormat === "avi") {
-    converter.videoCodec("mpeg4").audioCodec("libmp3lame");
+    converter
+      .videoCodec("mpeg4")
+      .audioCodec("libmp3lame")
+      .outputOptions([
+        `-threads ${FFMPEG_THREADS}`,
+        '-r 30',
+        '-vsync cfr'
+      ]);
   } else if (outputFormat === "mkv") {
-    converter.videoCodec("libx264").audioCodec("aac");
+    converter
+      .videoCodec("libx264")
+      .audioCodec("aac")
+      .outputOptions([
+        '-preset ultrafast',
+        '-crf 23',
+        `-threads ${FFMPEG_THREADS}`,
+        '-tune zerolatency',
+        '-r 30',
+        '-vsync cfr'
+      ]);
   }
   // flv uses auto-selected codecs
 
   converter
     .on("start", (commandLine) => {
+      conversionStartTime = Date.now();
+      console.log("=".repeat(80));
+      console.log(`⏱️  CONVERSION STARTED at ${new Date().toISOString()}`);
+      console.log(`📁 Input: ${req.file.originalname} (${(req.file.size / 1024 / 1024).toFixed(2)} MB)`);
+      console.log(`🎯 Output: ${outputFormat.toUpperCase()}`);
+      console.log(`🧵 Threads: ${FFMPEG_THREADS}`);
+      console.log("=".repeat(80));
       console.log("FFmpeg command:", commandLine);
     })
     .on("progress", (progress) => {
-      console.log(`Processing: ${progress.percent?.toFixed(2)}% done`);
+      const elapsed = ((Date.now() - conversionStartTime) / 1000).toFixed(1);
+      console.log(`Processing: ${progress.percent?.toFixed(2)}% done (${elapsed}s elapsed)`);
     })
     .on("end", () => {
-      console.log("Conversion completed");
+      const conversionEndTime = Date.now();
+      const duration = ((conversionEndTime - conversionStartTime) / 1000).toFixed(2);
+      console.log("=".repeat(80));
+      console.log(`✅ CONVERSION COMPLETED at ${new Date().toISOString()}`);
+      console.log(`⏱️  Total time: ${duration} seconds`);
+      console.log("=".repeat(80));
 
       // Log successful conversion
       logConversion('video', {
@@ -266,7 +329,9 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
         inputFormat: path.extname(req.file.originalname).toLowerCase(),
         outputFormat: outputFormat,
         fileSize: req.file.size,
-        originalName: req.file.originalname
+        originalName: req.file.originalname,
+        conversionTime: duration,
+        threads: FFMPEG_THREADS
       });
 
       // Delete original uploaded file
