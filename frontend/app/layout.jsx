@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
         {/* Fonts */}
         <link rel="stylesheet" href="/fonts/fonts.css" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto+Condensed:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bangers&family=Roboto+Condensed:wght@400;700&display=swap"
           rel="stylesheet"
         />
       </head>

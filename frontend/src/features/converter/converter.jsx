@@ -216,8 +216,8 @@ function Converter() {
   };
 
   return (
-    <Card elevation={8}>
-      <CardContent sx={{ p: 4 }}>
+    <Box>
+      <Box sx={{ p: 4 }}>
         {!downloadUrl ? (
           <Stack spacing={3}>
             {/* Upload Area */}
@@ -234,6 +234,7 @@ function Converter() {
                   bgcolor: "action.hover",
                   borderColor: "primary.dark",
                 },
+                boxShadow: 'none', // 그림자 제거
               }}
             >
               <input
@@ -260,7 +261,7 @@ function Converter() {
 
             {/* File Info */}
             {file && (
-              <Paper sx={{ p: 2, bgcolor: "primary.lighter" }}>
+              <Paper sx={{ p: 2, bgcolor: "primary.lighter", border: 'none', boxShadow: 'none' }}>
                 <Stack
                   direction="row"
                   spacing={2}
@@ -466,8 +467,8 @@ function Converter() {
             </Stack>
           </Stack>
         )}
-      </CardContent>
-    </Card>
+      </Box>
+    </Box>
   );
 }
 

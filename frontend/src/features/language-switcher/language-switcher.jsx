@@ -1,8 +1,7 @@
-'use client';
-
 import { Select, MenuItem, FormControl } from "@mui/material";
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useLocale } from "next-intl";
+import { ACTION_BLUE } from "../../theme"; // ACTION_BLUE import 추가
 
 const languages = [
   { code: "en", label: "English" },
@@ -32,17 +31,17 @@ function LanguageSwitcher() {
         value={locale}
         onChange={handleChange}
         sx={{
-          color: "#FFD700",
+          color: ACTION_BLUE,
           "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#FFD700",
+            borderColor: ACTION_BLUE,
             borderWidth: "3px",
           },
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#FFD700",
+            borderColor: ACTION_BLUE,
             borderWidth: "3px",
           },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#FFD700",
+            borderColor: ACTION_BLUE,
             borderWidth: "3px",
           },
         }}

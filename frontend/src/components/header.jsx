@@ -1,23 +1,23 @@
 "use client";
 
-import { Box, Stack, Link as MuiLink } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Stack,
+  Link as MuiLink,
+  Typography,
+} from "@mui/material";
 import { Link } from "@/i18n/routing";
 import LanguageSwitcher from "../features/language-switcher/language-switcher";
 
 function Header() {
   return (
-    <Box
-      sx={{
-        width: "100%",
-        background: "#C30000", // 2번: 다크 레드
-        color: "#FFD700", // 골드 텍스트
-        boxShadow: "0 3px 24px rgba(0,0,0,.08)",
-      }}
-    >
+    <AppBar position="static">
       <Box
         sx={{
           maxWidth: "1280px",
           margin: "0 auto",
+          width: "100%",
           height: {
             xs: "56px",
             md: "88px",
@@ -34,16 +34,11 @@ function Header() {
         <MuiLink
           component={Link}
           href="/"
-          sx={{ display: "flex", alignItems: "center" }}
+          sx={{ textDecoration: "none" }}
         >
-          <Box
-            component="img"
-            src="/logo.svg"
-            alt="OpenConvert"
-            sx={{
-              height: "48px",
-            }}
-          />
+          <Typography variant="subtitle1" component="div" sx={{ fontSize: { xs: "1.8rem", md: "2.5rem" } }}>
+            OPEN <span style={{ fontWeight: 400, opacity: 0.9 }}>CONVERT</span>
+          </Typography>
         </MuiLink>
 
         <Stack direction="row" spacing={2} alignItems="center">
@@ -51,7 +46,7 @@ function Header() {
             component={Link}
             href="/blog"
             sx={{
-              color: "white",
+              color: "text.primary",
               textDecoration: "none",
               "&:hover": { textDecoration: "underline" },
             }}
@@ -61,7 +56,7 @@ function Header() {
           <LanguageSwitcher />
         </Stack>
       </Box>
-    </Box>
+    </AppBar>
   );
 }
 

@@ -17,92 +17,59 @@ const spacing = {
 // Golden Ratio based typography scale
 const BASE_FONT_SIZE = 16;
 
-// Marvel Style Constants
-const COMIC_BORDER_WIDTH = "3px";
-const COMIC_INK_COLOR = "#121212"; // 거의 완전한 검정
-const HARD_SHADOW = `4px 4px 0px ${COMIC_INK_COLOR}`; // 부드럽지 않은 딱딱한 그림자
+// Daily Bugle Blue Edition - Modern Editorial Comics
+const COMIC_INK = "#1A1A1B"; // 너무 새검정보다는 깊은 다크 그레이
+const ACTION_BLUE = "#0052FF"; // 신뢰를 주는 현대적인 블루
+const ACCENT_YELLOW = "#FFD600"; // 주의/완료를 나타내는 코믹스 포인트
+const THICK_BORDER = "2.5px";
 
 const theme = createTheme({
   palette: {
-    // Iron Man 테마: 아이언맨의 상징적인 레드와 골드
+    mode: 'light',
     primary: {
-      main: "#ED1D24", // Iron Man Red (Mark 3 슈트 색상)
-      dark: "#C30000",
-      light: "#FF5F52",
+      main: ACTION_BLUE,
       contrastText: "#FFFFFF",
     },
-    // 아이언맨 아크 리액터 골드
     secondary: {
-      main: "#FFD700", // Arc Reactor Gold
-      dark: "#C7A300",
-      light: "#FFFF52",
-      contrastText: COMIC_INK_COLOR,
+      main: ACCENT_YELLOW,
     },
     background: {
-      default: "#FFF8E7", // 클래식 코믹북 바랜 종이 색상 (따뜻한 크림)
-      paper: "#FFFEF5", // 컷(Panel) 배경 (밝은 아이보리)
+      default: "#FFFFFF", // 순수한 흰색으로 변경하여 가독성 높임
+      paper: "#FFFFFF",
     },
     text: {
-      primary: COMIC_INK_COLOR, // 잉크색
-      secondary: "#424242",
-    },
-    action: {
-      hoverOpacity: 0.08,
+      primary: COMIC_INK,
+      secondary: "#5F6368",
     },
   },
   typography: {
-    // 기본은 강하고 좁은 Roboto Condensed
-    fontFamily: '"Roboto Condensed", "Helvetica", "Arial", sans-serif',
-    fontSize: 16,
-    htmlFontSize: 16,
-    // 헤드라인은 코믹북 스타일의 'Bangers' 폰트 적용
+    fontFamily: '"Roboto Condensed", "Arial", sans-serif',
     h1: {
       fontFamily: '"Bangers", cursive',
-      fontSize: "4.5rem", // 매우 크고 과장되게
-      letterSpacing: "0.05em",
-      textTransform: "uppercase", // 무조건 대문자
-      color: COMIC_INK_COLOR,
-      textShadow: `2px 2px 0px ${COMIC_INK_COLOR}, 4px 4px 0px #ED1D24`, // 이중 그림자 효과
-    },
-    h2: {
-      fontFamily: '"Bangers", cursive',
-      fontSize: "3.5rem",
-      textTransform: "uppercase",
-      color: COMIC_INK_COLOR,
-    },
-    h3: {
-      fontFamily: '"Bangers", cursive',
-      fontSize: "2.5rem",
-      textTransform: "uppercase",
-    },
-    h4: {
-      // H4부터는 가독성을 위해 Roboto Condensed의 가장 굵은 웨이트 사용
-      fontFamily: '"Roboto Condensed", sans-serif',
-      fontWeight: 700,
-      fontSize: "2rem",
-      textTransform: "uppercase",
+      fontSize: "3.5rem", // 가독성을 위해 크기 조절
+      color: COMIC_INK,
       letterSpacing: "0.02em",
     },
-    h5: {
-      fontFamily: '"Roboto Condensed", sans-serif',
+    h4: {
       fontWeight: 700,
-      fontSize: "1.5rem",
       textTransform: "uppercase",
+      letterSpacing: "0.5px",
     },
-    h6: {
-      fontFamily: '"Roboto Condensed", sans-serif',
-      fontWeight: 700,
+    subtitle1: { // Logo 전용으로 활용
+      fontFamily: '"Bebas Neue", sans-serif',
+      fontSize: "2.5rem",
+      letterSpacing: "-1px",
+      lineHeight: 1,
+      color: "#FFFFFF",
+      backgroundColor: "#ED1D24", // 마블 시그니처 레드
+      padding: "4px 8px",
+      display: "inline-block",
       textTransform: "uppercase",
+      border: `2px solid ${COMIC_INK}`,
     },
     button: {
-      fontFamily: '"Roboto Condensed", sans-serif',
       fontWeight: 700,
-      fontSize: "1.1rem",
-      textTransform: "uppercase",
-      letterSpacing: "0.05em",
-    },
-    body1: {
-      fontWeight: 500, // 본문도 약간 힘있게
+      letterSpacing: "1px",
     },
   },
   spacing: BASE_UNIT,
@@ -111,112 +78,81 @@ const theme = createTheme({
     borderRadius: 2,
   },
   components: {
-    // *** 핵심: 모든 컴포넌트에 만화 잉크펜 테두리 적용 ***
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#FFFFFF",
+          color: COMIC_INK,
+          borderBottom: `3px solid ${COMIC_INK}`,
+          boxShadow: "none",
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderBottomWidth: "2px",
+          borderColor: COMIC_INK,
+        },
+      },
+    },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          // 아주 깔끔한 종이 질감의 망점 (거의 안 보일 듯 미세하게)
+          backgroundImage: `radial-gradient(${COMIC_INK}11 0.8px, transparent 0.8px)`,
+          backgroundSize: "24px 24px",
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
-          // 만화책 패널처럼 보이게 설정
-          border: `${COMIC_BORDER_WIDTH} solid ${COMIC_INK_COLOR}`,
-          boxShadow: HARD_SHADOW, // 딱딱한 그림자
+          borderRadius: 0,
+          border: `${THICK_BORDER} solid ${COMIC_INK}`,
+          // 그림자를 '블루'로 주어 현대적인 마케팅 느낌 가미
+          boxShadow: `6px 6px 0px ${ACTION_BLUE}`,
+          padding: "24px",
         },
-        elevation1: {
-          boxShadow: HARD_SHADOW,
-        },
-        elevation2: {
-          boxShadow: `6px 6px 0px ${COMIC_INK_COLOR}`,
-        },
-        // ... 필요한 elevation 만큼 추가 정의
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          // 버튼도 만화 패널처럼
-          border: `${COMIC_BORDER_WIDTH} solid ${COMIC_INK_COLOR}`,
-          borderRadius: 0, // 완전 사각형
-          boxShadow: HARD_SHADOW,
-          padding: "10px 24px",
-          transition: "all 0.1s ease-in-out",
+          borderRadius: 0,
+          border: `${THICK_BORDER} solid ${COMIC_INK}`,
+          boxShadow: `3px 3px 0px ${COMIC_INK}`,
+          transition: "all 0.1s",
           "&:hover": {
-            // 호버 시 그림자가 눌리는 듯한 효과
-            transform: "translate(2px, 2px)",
-            boxShadow: `2px 2px 0px ${COMIC_INK_COLOR}`,
+            transform: "translate(-1px, -1px)",
+            boxShadow: `5px 5px 0px ${COMIC_INK}`,
+            backgroundColor: ACTION_BLUE,
+            color: "#fff",
           },
           "&:active": {
-            transform: "translate(4px, 4px)",
+            transform: "translate(2px, 2px)",
             boxShadow: "none",
           },
-        },
-        containedPrimary: {
-          // Primary 버튼은 빨간색 배경에 검은 테두리 유지
-          "&:hover": {
-            backgroundColor: "#C30000", // 더 진한 레드
-          },
-        },
-        outlined: {
-          // Outlined 버튼도 두꺼운 테두리 적용
-          border: `${COMIC_BORDER_WIDTH} solid ${COMIC_INK_COLOR}`,
-          "&:hover": {
-            border: `${COMIC_BORDER_WIDTH} solid ${COMIC_INK_COLOR}`,
-            backgroundColor: "rgba(0,0,0,0.05)",
-          },
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          // Card는 MuiPaper를 상속받으므로 기본적으로 테두리와 그림자가 적용됨
-          // 여기서는 둥근 모서리만 확실히 제거
-          borderRadius: 0,
-          overflow: "visible", // 하드 쉐도우가 잘리지 않도록
         },
       },
     },
     MuiTextField: {
       styleOverrides: {
         root: {
-          // 입력 필드도 만화 스타일로
           "& .MuiOutlinedInput-root": {
             borderRadius: 0,
+            backgroundColor: "#F8F9FA",
             "& fieldset": {
-              borderWidth: COMIC_BORDER_WIDTH,
-              borderColor: COMIC_INK_COLOR,
+              borderWidth: THICK_BORDER,
+              borderColor: COMIC_INK,
             },
             "&:hover fieldset": {
-              borderColor: COMIC_INK_COLOR, // 호버 색상 변경 방지
+              borderColor: ACTION_BLUE,
             },
             "&.Mui-focused fieldset": {
-              borderColor: "#ED1D24", // 포커스 시 마블 레드
-              borderWidth: COMIC_BORDER_WIDTH,
-              boxShadow: `4px 4px 0px #ED1D24`, // 포커스 시 빨간 하드 쉐도우
+              borderColor: ACTION_BLUE,
+              boxShadow: `inset 4px 4px 0px ${ACTION_BLUE}11`,
             },
-          },
-        },
-      },
-    },
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          borderBottom: `${COMIC_BORDER_WIDTH} solid ${COMIC_INK_COLOR}`,
-          boxShadow: "none", // AppBar는 하드 쉐도우 대신 테두리만
-        },
-      },
-    },
-    MuiAccordion: {
-      styleOverrides: {
-        root: {
-          // 아코디언도 패널처럼
-          borderRadius: 0,
-          border: `${COMIC_BORDER_WIDTH} solid ${COMIC_INK_COLOR}`,
-          boxShadow: HARD_SHADOW,
-          marginBottom: BASE_UNIT * 2,
-          "&:before": {
-            display: "none",
-          },
-          "&.Mui-expanded": {
-            margin: 0,
-            marginBottom: BASE_UNIT * 2,
           },
         },
       },
@@ -225,6 +161,15 @@ const theme = createTheme({
 });
 
 // Export for use in components
-export { PHI, spacing, BASE_FONT_SIZE, BASE_UNIT };
+export {
+  PHI,
+  spacing,
+  BASE_FONT_SIZE,
+  BASE_UNIT,
+  COMIC_INK,
+  ACTION_BLUE,
+  ACCENT_YELLOW,
+  THICK_BORDER,
+};
 
 export default theme;

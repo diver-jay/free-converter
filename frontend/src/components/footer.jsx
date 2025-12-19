@@ -2,7 +2,7 @@
 
 import { Box, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
-import { spacing } from "../theme";
+import { spacing, ACTION_BLUE, COMIC_INK } from "../theme";
 import FAQ from "../features/faq/faq";
 
 function Footer() {
@@ -46,18 +46,20 @@ function Footer() {
             textAlign: "center",
           }}
         >
-          <Box
-            component="img"
-            src="/logo.svg"
-            alt={t("footer.info")}
+          <Typography
             sx={{
-              filter: "grayscale(100%)",
-              opacity: 0.7,
-              width: 180,
-              height: "auto",
-              minWidth: "152px",
+              fontFamily: '"Bangers", cursive',
+              fontSize: "2rem",
+              color: COMIC_INK,
+              textShadow: `2px 2px 0px ${ACTION_BLUE}55, 3px 3px 0px ${COMIC_INK}22`,
+              letterSpacing: "2px",
             }}
-          />
+          >
+            OPEN CONVERT
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
+            © 2025 MULTIVERSE CONVERSION PROTOCOL. ALL RIGHTS RESERVED.
+          </Typography>
         </Box>
       </Box>
     </Box>
