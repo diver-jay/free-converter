@@ -6,6 +6,7 @@ const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
 const { v4: uuidv4 } = require("uuid");
 const os = require("os");
+const EventEmitter = require("events");
 require("dotenv").config();
 
 const app = express();
@@ -13,7 +14,20 @@ const PORT = process.env.PORT || 3001;
 
 // Auto-detect CPU count, or use env variable for override
 const FFMPEG_THREADS = process.env.FFMPEG_THREADS || os.cpus().length;
-console.log(`FFmpeg will use ${FFMPEG_THREADS} threads (${os.cpus().length} CPUs available)`);
+
+// Progress tracking
+const progressStore = new Map(); // jobId -> { percent, status, error, downloadUrl, filename }
+const progressEmitter = new EventEmitter();
+
+// Update progress and emit event
+function updateProgress(jobId, data) {
+  if (!progressStore.has(jobId)) {
+    progressStore.set(jobId, {});
+  }
+  const progress = progressStore.get(jobId);
+  Object.assign(progress, data);
+  progressEmitter.emit(jobId, progress);
+}
 
 // Middleware
 app.use(cors());
@@ -212,6 +226,46 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+// SSE endpoint for progress streaming
+app.get("/api/progress/:jobId", (req, res) => {
+  const { jobId } = req.params;
+
+  // Set SSE headers
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    "Connection": "keep-alive",
+  });
+
+  // Send initial state if exists
+  const currentProgress = progressStore.get(jobId);
+  if (currentProgress) {
+    res.write(`data: ${JSON.stringify(currentProgress)}\n\n`);
+  } else {
+    res.write(`data: ${JSON.stringify({ percent: 0, status: "waiting" })}\n\n`);
+  }
+
+  // Listen for progress updates
+  const progressListener = (progress) => {
+    res.write(`data: ${JSON.stringify(progress)}\n\n`);
+
+    // Close connection when done
+    if (progress.status === "completed" || progress.status === "error") {
+      res.end();
+      progressEmitter.off(jobId, progressListener);
+      // Clean up after 30 seconds
+      setTimeout(() => progressStore.delete(jobId), 30000);
+    }
+  };
+
+  progressEmitter.on(jobId, progressListener);
+
+  // Clean up on client disconnect
+  req.on("close", () => {
+    progressEmitter.off(jobId, progressListener);
+  });
+});
+
 // Upload and convert endpoint
 app.post("/api/upload", upload.single("video"), async (req, res) => {
   if (!req.file) {
@@ -233,7 +287,20 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
   const outputFilename = `${path.parse(req.file.filename).name}.${outputFormat}`;
   const outputPath = path.join(CONVERTED_DIR, outputFilename);
 
-  console.log(`Converting ${req.file.originalname} to ${outputFormat}...`);
+  // Use filename (UUID) as jobId
+  const jobId = path.parse(req.file.filename).name;
+
+  // Initialize progress
+  updateProgress(jobId, { percent: 0, status: "processing" });
+
+  console.log(`[${jobId}] Starting conversion: ${req.file.originalname} -> ${outputFormat}`);
+
+  // Respond immediately with jobId
+  res.json({
+    success: true,
+    jobId: jobId,
+    message: "Conversion started"
+  });
 
   // Track conversion time
   let conversionStartTime;
@@ -303,25 +370,30 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
   converter
     .on("start", (commandLine) => {
       conversionStartTime = Date.now();
-      console.log("=".repeat(80));
-      console.log(`⏱️  CONVERSION STARTED at ${new Date().toISOString()}`);
-      console.log(`📁 Input: ${req.file.originalname} (${(req.file.size / 1024 / 1024).toFixed(2)} MB)`);
-      console.log(`🎯 Output: ${outputFormat.toUpperCase()}`);
-      console.log(`🧵 Threads: ${FFMPEG_THREADS}`);
-      console.log("=".repeat(80));
-      console.log("FFmpeg command:", commandLine);
+      console.log(`[${jobId}] FFmpeg started`);
+      updateProgress(jobId, { percent: 0, status: "processing" });
     })
     .on("progress", (progress) => {
-      const elapsed = ((Date.now() - conversionStartTime) / 1000).toFixed(1);
-      console.log(`Processing: ${progress.percent?.toFixed(2)}% done (${elapsed}s elapsed)`);
+      const percent = Math.round(progress.percent || 0);
+      console.log(`[${jobId}] Progress: ${percent}%`);
+      updateProgress(jobId, {
+        percent: percent,
+        status: "processing"
+      });
     })
     .on("end", () => {
       const conversionEndTime = Date.now();
       const duration = ((conversionEndTime - conversionStartTime) / 1000).toFixed(2);
-      console.log("=".repeat(80));
-      console.log(`✅ CONVERSION COMPLETED at ${new Date().toISOString()}`);
-      console.log(`⏱️  Total time: ${duration} seconds`);
-      console.log("=".repeat(80));
+
+      console.log(`[${jobId}] Conversion completed in ${duration}s`);
+
+      // Update progress with completion data
+      updateProgress(jobId, {
+        percent: 100,
+        status: "completed",
+        downloadUrl: `/api/download/${outputFilename}`,
+        filename: outputFilename
+      });
 
       // Log successful conversion
       logConversion('video', {
@@ -338,18 +410,15 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
       fs.unlink(inputPath, (err) => {
         if (err) console.error("Error deleting uploaded file:", err);
       });
-
-      res.json({
-        success: true,
-        message: "Conversion successful",
-        downloadUrl: `/api/download/${outputFilename}`,
-        filename: outputFilename,
-        inputFormat: path.extname(req.file.originalname).toLowerCase(),
-        outputFormat: outputFormat,
-      });
     })
     .on("error", (err) => {
-      console.error("Conversion error:", err);
+      console.error(`[${jobId}] Conversion error:`, err.message);
+
+      updateProgress(jobId, {
+        percent: 0,
+        status: "error",
+        error: err.message
+      });
 
       // Log failed conversion
       logConversion('video', {
@@ -366,11 +435,6 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
       if (fs.existsSync(outputPath)) {
         fs.unlink(outputPath, () => {});
       }
-
-      res.status(500).json({
-        error: "Conversion failed",
-        details: err.message,
-      });
     })
     .run();
 });

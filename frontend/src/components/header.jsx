@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Box, Stack, Link as MuiLink } from "@mui/material";
 import { Link } from "@/i18n/routing";
@@ -31,22 +31,31 @@ function Header() {
           justifyContent: "space-between",
         }}
       >
-        <MuiLink component={Link} href="/" sx={{ display: 'flex', alignItems: 'center' }}>
+        <MuiLink
+          component={Link}
+          href="/"
+          sx={{ display: "flex", alignItems: "center" }}
+        >
           <Box
             component="img"
             src="/logo.svg"
             alt="OpenConvert"
             sx={{
-              height: {
-                xs: "50px",
-                md: "80px",
-              },
+              height: "48px",
             }}
           />
         </MuiLink>
 
         <Stack direction="row" spacing={2} alignItems="center">
-          <MuiLink component={Link} href="/blog" sx={{ color: 'white', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+          <MuiLink
+            component={Link}
+            href="/blog"
+            sx={{
+              color: "white",
+              textDecoration: "none",
+              "&:hover": { textDecoration: "underline" },
+            }}
+          >
             Blog
           </MuiLink>
           <LanguageSwitcher />

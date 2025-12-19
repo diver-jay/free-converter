@@ -5,6 +5,7 @@ const withNextIntl = require('next-intl/plugin')(
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+
   // API proxy to backend
   async rewrites() {
     return [
@@ -15,6 +16,13 @@ const nextConfig = {
           : 'http://localhost:3001/api/:path*',
       },
     ];
+  },
+
+  // Increase body size limit for file uploads (default: 10MB)
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '500mb',
+    },
   },
 
   // Image optimization

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useTranslations } from "next-intl";
 import {
@@ -38,6 +38,7 @@ function Converter() {
   const [fileName, setFileName] = useState("");
   const [outputFormat, setOutputFormat] = useState("mp4");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [jobId, setJobId] = useState(null);
   const open = Boolean(anchorEl);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
@@ -96,6 +97,43 @@ function Converter() {
     handleMenuClose();
   };
 
+  // SSE: Subscribe to conversion progress
+  useEffect(() => {
+    if (!jobId) return;
+
+    console.log(`[SSE] Connecting to jobId: ${jobId}`);
+    const eventSource = new EventSource(`${API_URL}/api/progress/${jobId}`);
+
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log(`[SSE] Received:`, data);
+
+      if (data.status === "processing") {
+        setProgress(data.percent);
+      } else if (data.status === "completed") {
+        setProgress(100);
+        setDownloadUrl(`${API_URL}${data.downloadUrl}`);
+        setFileName(data.filename);
+        setUploading(false);
+        console.log(`[SSE] Conversion completed`);
+      } else if (data.status === "error") {
+        setError(data.error || "Conversion failed");
+        setUploading(false);
+        console.error(`[SSE] Conversion error:`, data.error);
+      }
+    };
+
+    eventSource.onerror = (err) => {
+      console.error(`[SSE] Connection error:`, err);
+      eventSource.close();
+    };
+
+    // Cleanup on unmount or new upload
+    return () => {
+      eventSource.close();
+    };
+  }, [jobId]);
+
   const handleUpload = async () => {
     if (!file) {
       setError(t("errors.selectFile"));
@@ -106,6 +144,7 @@ function Converter() {
     setProgress(0);
     setError("");
     setDownloadUrl("");
+    setJobId(null);
 
     const formData = new FormData();
     const isDocument = isDocumentFile(file);
@@ -136,15 +175,26 @@ function Converter() {
       });
 
       if (response.data.success) {
-        setDownloadUrl(`${API_URL}${response.data.downloadUrl}`);
-        setFileName(response.data.filename);
-        setProgress(100);
+        console.log('[Upload] Response:', response.data);
+
+        // Video files: start SSE progress tracking
+        if (response.data.jobId) {
+          console.log('[Upload] Starting SSE tracking with jobId:', response.data.jobId);
+          setJobId(response.data.jobId);
+        }
+        // Document files: handle synchronously (still have downloadUrl in response)
+        else if (response.data.downloadUrl) {
+          console.log('[Upload] Document conversion completed');
+          setDownloadUrl(`${API_URL}${response.data.downloadUrl}`);
+          setFileName(response.data.filename);
+          setProgress(100);
+          setUploading(false);
+        }
       }
     } catch (err) {
       setError(err.response?.data?.error || t("errors.uploadFailed"));
-      console.error("Upload error:", err);
-    } finally {
       setUploading(false);
+      console.error("Upload error:", err);
     }
   };
 
@@ -285,9 +335,7 @@ function Converter() {
                   sx={{ height: 8, borderRadius: 4 }}
                 />
                 <Typography variant="body2" textAlign="center" sx={{ mt: 1 }}>
-                  {progress < 100
-                    ? t("upload.uploading", { progress })
-                    : t("upload.converting")}
+                  {`Converting... ${progress}%`}
                 </Typography>
               </Box>
             )}

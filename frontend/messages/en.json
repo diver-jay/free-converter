@@ -45,7 +45,7 @@
     "q2": "Where are converted files stored?",
     "a2": "Converted files are temporarily stored on the server and automatically deleted after 1 hour. After downloading, they are immediately saved to your browser's download folder.",
     "q3": "Is there a file size limit?",
-    "a3": "Currently, there is no file size limit, but larger files may take longer to convert. For stable conversion, we recommend files under 100MB.",
+    "a3": "The maximum file size is 500MB. Larger files may take longer to convert. For stable conversion, we recommend files under 100MB.",
     "q4": "Is it safe?",
     "a4": "Yes, all files are securely processed and automatically deleted after 1 hour. Files are used only for conversion purposes and are not shared with third parties.",
     "q5": "Is it really free?",
