@@ -51,6 +51,7 @@ function Converter() {
     ".avi",
     ".mkv",
     ".flv",
+    ".gif",
   ];
   const allowedDocumentExtensions = [".pdf", ".docx"];
   const allowedExtensions = [
@@ -78,7 +79,7 @@ function Converter() {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
     if (!isValidFile(selectedFile)) {
-      setError("Please select a valid file (Video: WebM, MP4, MOV, AVI, MKV, FLV | Document: PDF, DOCX)");
+      setError("Please select a valid file (Video: WebM, MP4, MOV, AVI, MKV, FLV, GIF | Document: PDF, DOCX)");
       setFile(null);
       return;
     }
@@ -91,7 +92,7 @@ function Converter() {
     const selectedFile = e.dataTransfer.files[0];
     if (!selectedFile) return;
     if (!isValidFile(selectedFile)) {
-      setError("Please select a valid file (Video: WebM, MP4, MOV, AVI, MKV, FLV | Document: PDF, DOCX)");
+      setError("Please select a valid file (Video: WebM, MP4, MOV, AVI, MKV, FLV, GIF | Document: PDF, DOCX)");
       setFile(null);
       return;
     }
@@ -267,7 +268,7 @@ function Converter() {
               <input
                 id="file-input"
                 type="file"
-                accept=".webm,.mp4,.mov,.avi,.mkv,.flv,.pdf,.docx"
+                accept=".webm,.mp4,.mov,.avi,.mkv,.flv,.gif,.pdf,.docx"
                 onChange={handleFileChange}
                 style={{ display: "none" }}
               />
@@ -448,6 +449,13 @@ function Converter() {
                   selected={outputFormat === "flv"}
                 >
                   FLV
+                </MenuItem>,
+                <MenuItem
+                  key="gif"
+                  onClick={() => handleFormatSelect("gif")}
+                  selected={outputFormat === "gif"}
+                >
+                  GIF
                 </MenuItem>
               ]}
             </Menu>

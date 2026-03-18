@@ -78,8 +78,8 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 500 * 1024 * 1024 }, // 500MB limit
   fileFilter: (req, file, cb) => {
-    // Support common video formats
-    const allowedExtensions = [".webm", ".mp4", ".mov", ".avi", ".mkv", ".flv"];
+    // Support common video formats and GIF
+    const allowedExtensions = [".webm", ".mp4", ".mov", ".avi", ".mkv", ".flv", ".gif"];
     const allowedMimeTypes = [
       "video/webm",
       "video/mp4",
@@ -87,6 +87,7 @@ const upload = multer({
       "video/x-msvideo",
       "video/x-matroska",
       "video/x-flv",
+      "image/gif",
     ];
 
     const ext = path.extname(file.originalname).toLowerCase();
@@ -98,7 +99,7 @@ const upload = multer({
     } else {
       cb(
         new Error(
-          "Only video files are allowed (webm, mp4, mov, avi, mkv, flv)"
+          "Only video/gif files are allowed (webm, mp4, mov, avi, mkv, flv, gif)"
         )
       );
     }
@@ -274,7 +275,7 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
 
   // Support all common video output formats
   const outputFormat = req.body.outputFormat || req.query.outputFormat || "mp4";
-  const allowedOutputFormats = ["mp4", "webm", "mov", "avi", "mkv", "flv"];
+  const allowedOutputFormats = ["mp4", "webm", "mov", "avi", "mkv", "flv", "gif"];
 
   if (!allowedOutputFormats.includes(outputFormat)) {
     return res.status(400).json({
@@ -284,6 +285,28 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
   }
 
   const inputPath = req.file.path;
+
+  // For GIF output, check video duration (max 30 seconds)
+  if (outputFormat === "gif") {
+    try {
+      const duration = await new Promise((resolve, reject) => {
+        ffmpeg.ffprobe(inputPath, (err, metadata) => {
+          if (err) reject(err);
+          else resolve(metadata.format.duration);
+        });
+      });
+      if (duration > 30) {
+        fs.unlink(inputPath, () => {});
+        return res.status(400).json({
+          error: `Video is too long for GIF conversion (${Math.round(duration)}s). Maximum is 30 seconds.`,
+        });
+      }
+    } catch (err) {
+      fs.unlink(inputPath, () => {});
+      return res.status(500).json({ error: "Failed to read video duration" });
+    }
+  }
+
   const outputFilename = `${path.parse(req.file.filename).name}.${outputFormat}`;
   const outputPath = path.join(CONVERTED_DIR, outputFilename);
 
@@ -363,6 +386,12 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
         '-tune zerolatency',
         '-r 30',
         '-vsync cfr'
+      ]);
+  } else if (outputFormat === "gif") {
+    converter
+      .outputOptions([
+        '-vf scale=320:-1:flags=lanczos,fps=15',
+        `-threads ${FFMPEG_THREADS}`
       ]);
   }
   // flv uses auto-selected codecs
