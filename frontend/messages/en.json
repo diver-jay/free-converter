@@ -55,11 +55,11 @@
   },
   "values": {
     "free": {
-      "title": "No sign-up, Convert free",
+      "title": "Always Free",
       "description": "No sign-up or installation required. Convert unlimited files for free on any device with no hidden costs."
     },
     "formats": {
-      "title": "Multi-Format Support",
+      "title": "Multi-Format",
       "description": "Convert freely between various file formats including MP4, WebM, MOV, AVI, MKV, FLV, GIF, PDF, and Word."
     },
     "security": {
