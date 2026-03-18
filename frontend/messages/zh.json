@@ -1,8 +1,8 @@
 {
   "metadata": {
     "title": "开放转换 - 免费文件转换器",
-    "description": "免费在线视频和文档转换器。转换MP4、WebM、MOV、AVI、MKV、FLV、PDF、Word。无需注册，100%免费。",
-    "keywords": "文件转换, 视频转换, 文档转换, 免费转换器, mp4转换, webm转换, mov转换, avi转换, mkv转换, flv转换, pdf转换, word转换, pdf转word, word转pdf, webm转mp4, mp4转webm, FFmpeg"
+    "description": "免费在线视频和文档转换器。转换MP4、WebM、MOV、AVI、MKV、FLV、GIF、PDF、Word。无需注册，100%免费。",
+    "keywords": "文件转换, 视频转换, 文档转换, 免费转换器, mp4转换, webm转换, mov转换, avi转换, mkv转换, flv转换, gif转换, gif转mp4, mp4转gif, 视频转gif, pdf转换, word转换, pdf转word, word转pdf, webm转mp4, mp4转webm, FFmpeg"
   },
   "header": {
     "title": "文件转换器",
@@ -14,7 +14,7 @@
   },
   "upload": {
     "chooseFile": "选择文件",
-    "dragDrop": "点击浏览或拖放文件（视频或文档）",
+    "dragDrop": "点击浏览或拖放文件（视频、GIF或文档）",
     "selected": "已选择",
     "size": "大小",
     "uploading": "上传中... {{progress}}%",
@@ -32,7 +32,7 @@
   "howToUse": {
     "title": "使用方法",
     "step1Title": "1. 选择文件",
-    "step1Desc": "点击上传区域或拖放以选择文件（视频：WebM、MP4、MOV、AVI、MKV、FLV / 文档：PDF、Word）",
+    "step1Desc": "点击上传区域或拖放以选择文件（视频：WebM、MP4、MOV、AVI、MKV、FLV、GIF / 文档：PDF、Word）",
     "step2Title": "2. 选择输出格式并转换",
     "step2Desc": "对于视频文件，从下拉菜单中选择所需的输出格式，然后点击转换按钮",
     "step3Title": "3. 下载",

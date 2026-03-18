@@ -1,20 +1,20 @@
 {
   "metadata": {
     "title": "오픈 컨버트 - 무료 파일 변환기",
-    "description": "무료 온라인 동영상 및 문서 변환기. MP4, WebM, MOV, AVI, MKV, FLV, PDF, Word 변환. 가입 불필요, 100% 무료.",
-    "keywords": "파일 변환, 동영상 변환, 문서 변환, 무료 변환기, mp4 변환, webm 변환, mov 변환, avi 변환, mkv 변환, flv 변환, pdf 변환, word 변환, pdf to word, word to pdf, webm to mp4, mp4 to webm, 영상 변환, FFmpeg"
+    "description": "무료 온라인 동영상 및 문서 변환기. MP4, WebM, MOV, AVI, MKV, FLV, GIF, PDF, Word 변환. 가입 불필요, 100% 무료.",
+    "keywords": "파일 변환, 동영상 변환, 문서 변환, 무료 변환기, mp4 변환, webm 변환, mov 변환, avi 변환, mkv 변환, flv 변환, gif 변환, gif to mp4, mp4 to gif, 동영상을 gif로, pdf 변환, word 변환, pdf to word, word to pdf, webm to mp4, mp4 to webm, 영상 변환, FFmpeg"
   },
   "header": {
     "title": "파일 변환기",
     "subtitle": "온라인에서 동영상과 문서를 쉽고 무료로 변환하세요"
   },
   "footer": {
-    "info": "Open convert",
-    "poweredBy": "100% 무료 변환"
+    "info": "Open Convert",
+    "poweredBy": "100% 무료"
   },
   "upload": {
     "chooseFile": "파일 선택",
-    "dragDrop": "클릭하거나 드래그하여 파일을 선택하세요 (동영상 또는 문서)",
+    "dragDrop": "클릭하거나 드래그하여 파일을 선택하세요 (동영상, GIF 또는 문서)",
     "selected": "선택됨",
     "size": "크기",
     "uploading": "업로드 중... {{progress}}%",
@@ -32,7 +32,7 @@
   "howToUse": {
     "title": "사용 방법",
     "step1Title": "1. 파일 선택",
-    "step1Desc": "업로드 영역을 클릭하거나 드래그하여 파일을 선택하세요 (동영상: WebM, MP4, MOV, AVI, MKV, FLV / 문서: PDF, Word)",
+    "step1Desc": "업로드 영역을 클릭하거나 드래그하여 파일을 선택하세요 (동영상: WebM, MP4, MOV, AVI, MKV, FLV, GIF / 문서: PDF, Word)",
     "step2Title": "2. 출력 형식 선택 및 변환",
     "step2Desc": "동영상 파일의 경우 드롭다운에서 원하는 출력 형식을 선택하고, 변환 버튼을 클릭하세요",
     "step3Title": "3. 다운로드",
