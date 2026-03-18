@@ -39,6 +39,7 @@ function Converter() {
   const [outputFormat, setOutputFormat] = useState("mp4");
   const [anchorEl, setAnchorEl] = useState(null);
   const [jobId, setJobId] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const open = Boolean(anchorEl);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
@@ -58,30 +59,53 @@ function Converter() {
   ];
 
   const isDocumentFile = (file) => isFileType(file, allowedDocumentExtensions);
+  const isValidFile = (file) => isFileType(file, allowedExtensions);
+
+  const applyFile = (selectedFile) => {
+    setFile(selectedFile);
+    setError("");
+    setDownloadUrl("");
+    setFileName("");
+    if (isDocumentFile(selectedFile)) {
+      const ext = selectedFile.name.split(".").pop().toLowerCase();
+      setOutputFormat(ext === "pdf" ? "docx" : "pdf");
+    } else {
+      setOutputFormat("mp4");
+    }
+  };
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      if (!isFileType(selectedFile, allowedExtensions)) {
-        setError(
-          "Please select a valid file (Video: WebM, MP4, MOV, AVI, MKV, FLV | Document: PDF, DOCX)"
-        );
-        setFile(null);
-        return;
-      }
-      setFile(selectedFile);
-      setError("");
-      setDownloadUrl("");
-      setFileName("");
-
-      // Set default output format based on file type
-      if (isDocumentFile(selectedFile)) {
-        const ext = selectedFile.name.split(".").pop().toLowerCase();
-        setOutputFormat(ext === "pdf" ? "docx" : "pdf");
-      } else {
-        setOutputFormat("mp4");
-      }
+    if (!selectedFile) return;
+    if (!isValidFile(selectedFile)) {
+      setError("Please select a valid file (Video: WebM, MP4, MOV, AVI, MKV, FLV | Document: PDF, DOCX)");
+      setFile(null);
+      return;
     }
+    applyFile(selectedFile);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const selectedFile = e.dataTransfer.files[0];
+    if (!selectedFile) return;
+    if (!isValidFile(selectedFile)) {
+      setError("Please select a valid file (Video: WebM, MP4, MOV, AVI, MKV, FLV | Document: PDF, DOCX)");
+      setFile(null);
+      return;
+    }
+    applyFile(selectedFile);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
   };
 
   const handleMenuClick = (event) => {
@@ -222,19 +246,22 @@ function Converter() {
           <Stack spacing={3}>
             {/* Upload Area */}
             <Paper
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
               sx={{
                 p: 4,
                 textAlign: "center",
                 border: "2px dashed",
-                borderColor: "primary.main",
-                bgcolor: "background.default",
+                borderColor: isDragging ? "primary.dark" : "primary.main",
+                bgcolor: isDragging ? "action.hover" : "background.default",
                 cursor: "pointer",
                 transition: "all 0.3s",
                 "&:hover": {
                   bgcolor: "action.hover",
                   borderColor: "primary.dark",
                 },
-                boxShadow: 'none', // 그림자 제거
+                boxShadow: 'none',
               }}
             >
               <input

@@ -19,37 +19,7 @@ import {
   PhoneIphone,
   Work,
 } from '@mui/icons-material';
-
-const blogPosts = [
-  {
-    title:
-      "Why your iPhone video (HEVC/MOV) won't play on Windows & How to fix it",
-    description:
-      "iPhone videos won't play on your Windows PC? Learn why HEVC/MOV format causes compatibility issues and how to convert to MP4 instantly.",
-    slug: 'iphone-video-hevc-mov-windows',
-    category: 'Video Conversion',
-    icon: 'PhoneIphone',
-    tags: ['iPhone', 'Windows', 'HEVC', 'MOV to MP4'],
-  },
-  {
-    title: 'Convert PDF to Word for Free: No Sign-up, No Email Required',
-    description:
-      'Convert PDF to editable Word documents instantly. 100% free, unlimited conversions, no registration, no watermarks.',
-    slug: 'convert-pdf-to-word-free',
-    category: 'Document Conversion',
-    icon: 'Description',
-    tags: ['PDF', 'Word', 'Free', 'No Sign-up'],
-  },
-  {
-    title: 'Submit resume in PDF or Word? Why format matters for ATS',
-    description:
-      'Learn which resume format (PDF vs Word) passes Applicant Tracking Systems better and avoid common resume rejection mistakes.',
-    slug: 'resume-pdf-word-ats',
-    category: 'Career Tips',
-    icon: 'Work',
-    tags: ['Resume', 'ATS', 'Job Application', 'PDF vs Word'],
-  },
-];
+import { useTranslations } from 'next-intl';
 
 const iconMap = {
   PhoneIphone: PhoneIphone,
@@ -57,7 +27,33 @@ const iconMap = {
   Work: Work,
 };
 
+const postSlugs = [
+  'iphone-video-hevc-mov-windows',
+  'convert-pdf-to-word-free',
+  'resume-pdf-word-ats',
+];
+
+// Add 'icon' mapping here as it's not part of the translation
+const postIcons = {
+  'iphone-video-hevc-mov-windows': 'PhoneIphone',
+  'convert-pdf-to-word-free': 'Description',
+  'resume-pdf-word-ats': 'Work',
+};
+
 export default function BlogIndex() {
+  const t = useTranslations('blog');
+
+  const blogPosts = postSlugs.map(slug => ({
+    slug,
+    title: t(`posts.${slug}.title`),
+    description: t(`posts.${slug}.description`),
+    category: t(`posts.${slug}.category`),
+    icon: postIcons[slug],
+    // Tags are an array, so we need to handle them differently if they need translation.
+    // For now, assuming tags are simple strings.
+    tags: t.raw(`posts.${slug}.tags`),
+  }));
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* Breadcrumbs */}
@@ -74,9 +70,9 @@ export default function BlogIndex() {
           }}
         >
           <HomeIcon sx={{ mr: 0.5, fontSize: 20 }} />
-          Home
+          {t('index.breadcrumbs.home')}
         </MuiLink>
-        <Typography color="text.primary">Blog</Typography>
+        <Typography color="text.primary">{t('index.breadcrumbs.blog')}</Typography>
       </Breadcrumbs>
 
       {/* Page Title */}
@@ -90,7 +86,7 @@ export default function BlogIndex() {
           fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
         }}
       >
-        File Conversion Guides & Tips
+        {t('index.title')}
       </Typography>
 
       <Typography
@@ -99,8 +95,7 @@ export default function BlogIndex() {
         paragraph
         sx={{ mb: 4 }}
       >
-        Practical guides to solve common file conversion problems. No fluff,
-        just solutions.
+        {t('index.description')}
       </Typography>
 
       {/* Blog Posts Grid */}
@@ -179,10 +174,10 @@ export default function BlogIndex() {
         sx={{ mt: 6, bgcolor: 'primary.lighter', p: 4, textAlign: 'center' }}
       >
         <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-          Need to convert a file right now?
+          {t('index.cta.title')}
         </Typography>
         <Typography variant="body1" paragraph color="text.secondary">
-          Use our free converter - no sign-up, no limits, no BS.
+          {t('index.cta.description')}
         </Typography>
         <MuiLink
           component={Link}
@@ -195,7 +190,7 @@ export default function BlogIndex() {
             '&:hover': { textDecoration: 'underline' },
           }}
         >
-          Go to Converter →
+          {t('index.cta.link')}
         </MuiLink>
       </Card>
     </Container>

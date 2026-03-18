@@ -66,6 +66,39 @@
     }
   },
   "blog": {
+    "index": {
+      "title": "File Conversion Guides & Tips",
+      "description": "Practical guides to solve common file conversion problems. No fluff, just solutions.",
+      "cta": {
+        "title": "Need to convert a file right now?",
+        "description": "Use our free converter - no sign-up, no limits, no BS.",
+        "link": "Go to Converter →"
+      },
+      "breadcrumbs": {
+        "home": "Home",
+        "blog": "Blog"
+      }
+    },
+    "posts": {
+      "iphone-video-hevc-mov-windows": {
+        "title": "Why your iPhone video (HEVC/MOV) won't play on Windows & How to fix it",
+        "description": "iPhone videos won't play on your Windows PC? Learn why HEVC/MOV format causes compatibility issues and how to convert to MP4 instantly.",
+        "category": "Video Conversion",
+        "tags": ["iPhone", "Windows", "HEVC", "MOV to MP4"]
+      },
+      "convert-pdf-to-word-free": {
+        "title": "Convert PDF to Word for Free: No Sign-up, No Email Required",
+        "description": "Convert PDF to editable Word documents instantly. 100% free, unlimited conversions, no registration, no watermarks.",
+        "category": "Document Conversion",
+        "tags": ["PDF", "Word", "Free", "No Sign-up"]
+      },
+      "resume-pdf-word-ats": {
+        "title": "Submit resume in PDF or Word? Why format matters for ATS",
+        "description": "Learn which resume format (PDF vs Word) passes Applicant Tracking Systems better and avoid common resume rejection mistakes.",
+        "category": "Career Tips",
+        "tags": ["Resume", "ATS", "Job Application", "PDF vs Word"]
+      }
+    },
     "atsResume": {
       "title": "Submit resume in PDF or Word? Why format matters for ATS",
       "intro": "You've spent hours perfecting your resume, but did you know that <strong>over 75% of resumes are rejected before a human ever sees them</strong>? The culprit? Applicant Tracking Systems (ATS) - and the wrong file format can be your downfall.",
